@@ -34,6 +34,7 @@ namespace SAE_1._01
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            float terre = 5;
 
             // TODO: Add your update logic here
 
