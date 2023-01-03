@@ -19,7 +19,7 @@ namespace SAE_1._01
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            Window.Title ="Test" ;
             base.Initialize();
         }
 
