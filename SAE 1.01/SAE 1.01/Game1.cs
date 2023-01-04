@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Tiled.Renderers;
 
 namespace SAE_1._01
 {
@@ -10,6 +8,8 @@ namespace SAE_1._01
     {
         public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        MapCreator _map01;
 
         public Game1()
         {
@@ -22,6 +22,7 @@ namespace SAE_1._01
         {
             // TODO: Add your initialization logic here
             Window.Title ="Test" ;
+            _map01 = new MapCreator("mapaTest", this);
             base.Initialize();
         }
 
