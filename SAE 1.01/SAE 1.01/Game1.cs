@@ -9,6 +9,8 @@ namespace SAE_1._01
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        public const int TAILLE_FENETRE = 800;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -19,7 +21,7 @@ namespace SAE_1._01
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Window.Title ="Test" ;
+
             base.Initialize();
         }
 
