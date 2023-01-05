@@ -74,5 +74,10 @@ namespace SAE_1._01
                 this.texture = value;
             }
         }
+
+        public void Action()
+        {
+            this.x = 500;
+        }
     }
 }

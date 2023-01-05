@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoGame.Extended.Sprites;
 
 namespace SAE_1._01
 {
@@ -13,12 +14,12 @@ namespace SAE_1._01
         private string nom;
         private int pointVie;
         private int pointAction;
-        private Texture2D texture;
+        private AnimatedSprite texture;
         private Case position;
 
-        protected Entite(Texture2D texture, string nom, Case position, int pointVie, int pointAction)
+        protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction)
         {
-            this.Texture = texture;
+            this.texture = new AnimatedSprite(spriteSheet);
             this.Nom = nom;
             this.Position = position;
             this.PointVie = pointVie;
@@ -90,7 +91,7 @@ namespace SAE_1._01
             }
         }
 
-        public Texture2D Texture
+        public AnimatedSprite Texture
         {
             get
             {
