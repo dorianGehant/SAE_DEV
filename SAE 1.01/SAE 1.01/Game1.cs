@@ -80,6 +80,11 @@ namespace SAE_1._01
                 _joueur1.Deplacer(new Vector2(_etatSouris.Position.X/_longueurCase, _etatSouris.Position.Y / _hauteurCase), _carte);
             }
 
+            if (_etatClavier.IsKeyDown(Keys.Right))
+            {
+                _joueur1.Deplacer(new Vector2(_joueur1.Position.X, _joueur1.Position.Y + 1), _carte);
+            }
+
             _map01.MiseAJour(gameTime);
             base.Update(gameTime);
         }

@@ -30,6 +30,11 @@ namespace SAE_1._01
             this.position = carte.TableauCases[(int)position.X, (int)position.Y];
         }
 
+        public void InfligeDegats(Entite cible)
+        {
+            
+        }
+
 
         public override bool Equals(object obj)
         {
