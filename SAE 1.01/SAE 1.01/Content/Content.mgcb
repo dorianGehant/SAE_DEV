@@ -30,15 +30,34 @@
 /processorParam:TextureFormat=Color
 /build:_MAP.png
 
+#begin characters.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:characters.png
+
+#begin contour_case.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:contour_case.png
+
 #begin mapaTest.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
 /build:mapaTest.tmx
-
-#begin mapGenerale.tmx
-/importer:TiledMapImporter
-/processor:TiledMapProcessor
-/build:mapGenerale.tmx
 
 #begin mapGeneraleTuiles.png
 /importer:TextureImporter
