@@ -73,11 +73,11 @@ namespace SAE_1._01
             
             gameManager = new GameManager();
             
-            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5,5], 1, 1, cases, gameManager);
-            j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 1, cases, gameManager);
+            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5,5], 1, 1, 5, 5, cases, gameManager);
+            j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 1, 5, 5, cases, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, cases, gameManager);
+            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, 2, 2, cases, gameManager);
             gameManager.AjouterCombattant(ennemi);
             
 

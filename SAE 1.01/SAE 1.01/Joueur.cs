@@ -16,8 +16,10 @@ namespace SAE_1._01
         public Joueur(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int attaque, int defense, Carte grille, GameManager gm)
             : base(spritesheet, nom, position, pointVie, pointAction, attaque, defense, grille, gm)
         {
-            sprite = new AnimatedSprite(spritesheet);
-            this.PlayAnim("attaque");
+            SetJoueur(this);
+
+            this.PlayAnim("idle");
+            jouable = true;
             //this.sorts = new List<Sort>(sorts);
         }
 

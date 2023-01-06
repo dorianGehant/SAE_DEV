@@ -33,7 +33,7 @@ namespace SAE_1._01
 
         void SetTour(Entite e)
         {
-            entiteTour = e;
+            e.jouable = true;
             e.JouerTour();
         }
         int ChercherEntiteIndex(Entite entite)
