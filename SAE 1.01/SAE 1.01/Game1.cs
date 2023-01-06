@@ -112,33 +112,45 @@ namespace SAE_1._01
             //positions souris
             int x = (_etatSouris.X - Window.Position.X) / TAILLE_CASE;
             int y = (_etatSouris.Y + - Window.Position.Y) / TAILLE_CASE;
-            
+
+            Entite jouable = gameManager.GetEntiteTour();
+
             //on verifie si la souris se trouve bien sur une case
-            if(x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
+            if (x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
             {
                 //on met le carre bleu sur la case ou il y a la souris
                 selectionne.X = x;
                 selectionne.Y = y ;
 
-                //verification clique
-                Entite jouable = gameManager.GetEntiteTour();
-                if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x,y]))
+                //verification si pas d'attente
+                if (jouable.jouable)
                 {
-                    //On bouge le joueur ou on clique
+                    //verification clique
+                    if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x, y]))
+                    {
+                        //On bouge le joueur ou on clique
 
-                    //jouable.Move(cases.TableauCases[x,y]);
-                    jouable.enleverPossible(_bordureCase);
-                    Console.WriteLine("cases souris " + y +"   "+ x);
-                    Console.WriteLine("casejouable " + jouable.Position.Y + " " + jouable.Position.X);
-                    jouable.Chemin_A_Star(cases.TableauCases[jouable.Position.Y, jouable.Position.X], cases.TableauCases[y, x]);
-                    Console.WriteLine(jouable.grille.TableauCases[jouable.Position.X, jouable.Position.Y].Collision);
-                    
+                        //jouable.Move(cases.TableauCases[x,y]);
+                        jouable.enleverPossible(_bordureCase);
+                        Console.WriteLine("cases souris " + y + "   " + x);
+                        Console.WriteLine("case jouable " + jouable.Position.Y + " " + jouable.Position.X);
+                        jouable.Chemin_A_Star(cases.TableauCases[jouable.Position.Y, jouable.Position.X], cases.TableauCases[y, x]);
+                        Console.WriteLine(jouable.grille.TableauCases[jouable.Position.X, jouable.Position.Y].Collision);
+
+                    }
                 }
-                jouable.MoveChemin(deltaSeconds);
+                else
+                {
+                    jouable.MoveChemin(deltaSeconds);
+                    if (jouable.jouable)
+                        jouable.Possible(_bordureCasePossible);
+                }
+
             }
 
             if (simulationKey.IsKeyDown(InputKeys.E) && KeyPressedE == false)
             {
+                jouable.enleverPossible(_bordureCase);
                 gameManager.ProchaineEntite();
             }
             KeyPressedE = simulationKey.IsKeyDown(InputKeys.E);
