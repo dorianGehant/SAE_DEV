@@ -194,7 +194,12 @@ namespace SAE_1._01
         public bool MoveChemin(float deltaSeconds)
         {
             if (chemin == null || chemin.Count == 0)
+            {
+                this.PlayAnim("Idle");
                 return false;
+            }
+                
+            this.PlayAnim("Walk");
             TimeNextCase -= deltaSeconds;
             if (TimeNextCase <= 0)
             {
