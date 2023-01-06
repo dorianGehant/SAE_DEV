@@ -17,6 +17,7 @@ namespace SAE_1._01
             : base(spritesheet, nom, position, pointVie, pointAction,grille,gm)
         {
             SetJoueur(this);
+            
             this.PlayAnim("attaque");
             jouable = true;
             //this.sorts = new List<Sort>(sorts);

@@ -31,6 +31,8 @@ namespace SAE_1._01
             this.PointAction = pointAction;
             this.grille = carte;
             this.gameManager = gm;
+            Vector2 pos = this.GetPositionCase(grille.TailleCase);
+            this.Move(grille.TableauCases[(int)pos.X, (int)pos.Y]);
         }
 
         public void Deplacer(Vector2 position, Carte carte)
@@ -140,7 +142,14 @@ namespace SAE_1._01
 
         public void Move(Case c)
         {
-            this.Position = c;
+            if(c.movable == true)
+            {
+                Vector2 pos = this.GetPositionCase(grille.TailleCase);
+                grille.TableauCases[(int)pos.X, (int)pos.Y].movable = true;
+                c.movable = false;
+                this.Position = c;
+            }
+            
         }
 
         public Vector2 GetPositionCase(int tailleCase)
