@@ -30,6 +30,7 @@ namespace SAE_1._01
 
         private CreateurCarte _map01;
         private Texture2D _bordureCase;
+        public Texture2D _bordureCasePossible;
 
         private Joueur _joueur1;
         private Texture2D _texturePersonnage;
@@ -62,6 +63,7 @@ namespace SAE_1._01
             //On load les differents elements
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
             _bordureCase = Content.Load<Texture2D>("contour_case");
+            _bordureCasePossible = Content.Load<Texture2D>("case_proposer");
             _textureSelectionne = Content.Load<Texture2D>("New Piskel-1");
             _texturePersonnage = Content.Load<Texture2D>("perso");
             _font = Content.Load<SpriteFont>("Font");
@@ -72,10 +74,10 @@ namespace SAE_1._01
             selectionne = new Case(-100, -100, _textureSelectionne);
             cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
             
-            gameManager = new GameManager();
+            gameManager = new GameManager(_bordureCasePossible);
             
-            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5,5], 1, 1, cases, gameManager);
-            j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 1, cases, gameManager);
+            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5,5], 1, 7, cases, gameManager);
+            j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 7, cases, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
             ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, cases, gameManager);
@@ -120,11 +122,12 @@ namespace SAE_1._01
 
                 //verification clique
                 Entite jouable = gameManager.GetEntiteTour();
-                if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false)
+                if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x,y]))
                 {
                     //On bouge le joueur ou on clique
-                    
+
                     //jouable.Move(cases.TableauCases[x,y]);
+                    jouable.enleverPossible(_bordureCase);
                     Console.WriteLine("cases souris " + y +"   "+ x);
                     Console.WriteLine("casejouable " + jouable.Position.Y + " " + jouable.Position.X);
                     jouable.Chemin_A_Star(cases.TableauCases[jouable.Position.Y, jouable.Position.X], cases.TableauCases[y, x]);

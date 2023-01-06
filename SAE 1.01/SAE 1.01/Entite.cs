@@ -24,6 +24,7 @@ namespace SAE_1._01
         Joueur j;
         Ennemi e;
         List<Case> chemin;
+        List<int[]> cases_possibles;
 
         protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction,Carte carte,GameManager gm)
         {
@@ -185,6 +186,33 @@ namespace SAE_1._01
         public void UpdateAnim(float deltaseconds)
         {
             texture.Update(deltaseconds);
+        }
+        public void Possible(Texture2D _bordureCasePossible)
+        {
+            List<int[]> deplacementPossible = PathFinding.findpath(this.Position, grille.TableauCases , this.PointAction);
+            for (int i = 0; i < deplacementPossible.Count-1; i++)
+            {
+                grille.TableauCases[deplacementPossible[i][0],deplacementPossible[i][1]].Texture = _bordureCasePossible;
+            }
+            this.cases_possibles = deplacementPossible;
+        }
+        public bool clicDansZonePossible(Case possition_clic)
+        {
+            for (int i = 0; i < this.cases_possibles.Count - 1; i++)
+            {
+                if (this.cases_possibles[i][0] == possition_clic.X && this.cases_possibles[i][1] == possition_clic.Y)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public void enleverPossible(Texture2D _bordureCase)
+        {
+            for (int i = 0; i < this.cases_possibles.Count - 1; i++)
+            {
+                grille.TableauCases[this.cases_possibles[i][0], this.cases_possibles[i][1]].Texture = _bordureCase;
+            }
         }
 
         public void SetChemin(List<Case> c)

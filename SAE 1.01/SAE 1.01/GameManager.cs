@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,10 @@ namespace SAE_1._01
 {
         List<Entite> entitesCombat = new List<Entite>();
         Entite entiteTour;
-        public GameManager()
+        Texture2D _bordureCasePossible;
+        public GameManager(Texture2D _bordureCasePossible)
         {
-
+            this._bordureCasePossible = _bordureCasePossible;
         }
         public void CommencerJeu()
         {
@@ -34,6 +36,7 @@ namespace SAE_1._01
         void SetTour(Entite e)
         {
             entiteTour = e;
+            entiteTour.Possible(_bordureCasePossible);
             e.JouerTour();
         }
         int ChercherEntiteIndex(Entite entite)
