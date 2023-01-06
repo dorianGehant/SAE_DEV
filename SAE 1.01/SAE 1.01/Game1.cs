@@ -8,13 +8,14 @@ using MonoGame.Extended.Content;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Tiled;
+using System.Collections.Generic;
 
 namespace SAE_1._01
 {
     public class Game1 : Game
     {
         
-        const int LONGUEUR_CASE = 19, HAUTEUR_CASE = 13,TAILLE_CASE = 25;
+        const int LONGUEUR_CASE = 13, HAUTEUR_CASE = 13,TAILLE_CASE = 25;
         public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private MouseState _etatSouris;
@@ -42,6 +43,7 @@ namespace SAE_1._01
         GameManager gameManager;
         SpriteFont _font;
         bool KeyPressedE = false;
+        bool mouseClick = false;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -74,14 +76,14 @@ namespace SAE_1._01
             
             gameManager = new GameManager();
             
-            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[2,2], 1, 1, cases, gameManager);
+            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5,5], 1, 1, cases, gameManager);
             j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 1, cases, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
             ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, cases, gameManager);
             gameManager.AjouterCombattant(ennemi);
-
             
+
 
             //valeur des tailles 
             _longueurCase = (int)_map01.TailleCase().X;
@@ -110,21 +112,28 @@ namespace SAE_1._01
             //positions souris
             int x = (_etatSouris.X - Window.Position.X) / TAILLE_CASE;
             int y = (_etatSouris.Y + - Window.Position.Y) / TAILLE_CASE;
-
+            
             //on verifie si la souris se trouve bien sur une case
             if(x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
             {
                 //on met le carre bleu sur la case ou il y a la souris
-                selectionne.X = x * TAILLE_CASE;
-                selectionne.Y = y * TAILLE_CASE;
+                selectionne.X = x;
+                selectionne.Y = y ;
 
                 //verification clique
-                if (simulation.IsMouseDown(InputMouseButtons.Left))
+                Entite jouable = gameManager.GetEntiteTour();
+                if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false)
                 {
                     //On bouge le joueur ou on clique
-                    Entite jouable = gameManager.GetEntiteTour();
-                    jouable.Move(cases.TableauCases[x,y]);
+                    
+                    //jouable.Move(cases.TableauCases[x,y]);
+                    Console.WriteLine("cases souris " + y +"   "+ x);
+                    Console.WriteLine("casejouable " + jouable.Position.Y + " " + jouable.Position.X);
+                    jouable.Chemin_A_Star(cases.TableauCases[jouable.Position.Y, jouable.Position.X], cases.TableauCases[y, x]);
+                    Console.WriteLine(jouable.grille.TableauCases[jouable.Position.X, jouable.Position.Y].Collision);
+                    
                 }
+                jouable.MoveChemin(deltaSeconds);
             }
 
             if (simulationKey.IsKeyDown(InputKeys.E) && KeyPressedE == false)
@@ -132,6 +141,7 @@ namespace SAE_1._01
                 gameManager.ProchaineEntite();
             }
             KeyPressedE = simulationKey.IsKeyDown(InputKeys.E);
+            mouseClick = simulation.IsMouseDown(InputMouseButtons.Left);
             //mise a jour / update
             j1.UpdateAnim(deltaSeconds);
             j2.UpdateAnim(deltaSeconds);
@@ -148,7 +158,7 @@ namespace SAE_1._01
             _spriteBatch.Begin();
             _map01.Dessiner();
             cases.AfficherMap(_spriteBatch);
-            _spriteBatch.Draw(selectionne.Texture, new Vector2(selectionne.X, selectionne.Y), Color.White);
+            _spriteBatch.Draw(selectionne.Texture, new Vector2(selectionne.X * TAILLE_CASE, selectionne.Y * TAILLE_CASE), Color.White);
             j1.Afficher(_spriteBatch);
             j2.Afficher(_spriteBatch);
             ennemi.Afficher(_spriteBatch);
