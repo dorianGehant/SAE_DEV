@@ -18,7 +18,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin _MAP.png
+#begin anim attaque.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -28,7 +28,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:_MAP.png
+/build:anim attaque.png
 
 #begin characters.png
 /importer:TextureImporter
@@ -54,12 +54,12 @@
 /processorParam:TextureFormat=Color
 /build:contour_case.png
 
-#begin mapaTest.tmx
+#begin mapPrincipale.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
-/build:mapaTest.tmx
+/build:mapPrincipale.tmx
 
-#begin mapGeneraleTuiles.png
+#begin New Piskel-1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -69,10 +69,40 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:mapGeneraleTuiles.png
+/build:New Piskel-1.png
 
-#begin tuile.tsx
+#begin perso.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:perso.png
+
+#begin persoAnimation.sf
+/importer:SpriteFactoryContentImporter
+/processor:SpriteFactoryContentProcessor
+/processorParam:ContentType=MonoGame.Extended MonoGame.Extended.Animations.SpriteFactory.SpriteFactoryFileReader, MonoGame.Extended.Animations
+/build:persoAnimation.sf
+
+#begin Slates [32x32px orthogonal tileset by Ivan Voirol].png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Slates [32x32px orthogonal tileset by Ivan Voirol].png
+
+#begin tuilesMap.tsx
 /importer:TiledMapTilesetImporter
 /processor:TiledMapTilesetProcessor
-/build:tuile.tsx
+/build:tuilesMap.tsx
 

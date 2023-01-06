@@ -5,34 +5,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoGame.Extended.Sprites;
 
 namespace SAE_1._01
 {
+
     internal class Entite
     {
         private string nom;
         private int pointVie;
         private int pointAction;
-        private Texture2D texture;
+        private int attaque;
+        private int defense;
+        private AnimatedSprite texture;
         private Case position;
 
-        protected Entite(Texture2D texture, string nom, Case position, int pointVie, int pointAction)
+        protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction, int attaque, int defense)
         {
-            this.Texture = texture;
+            this.texture = new AnimatedSprite(spriteSheet);
             this.Nom = nom;
             this.Position = position;
             this.PointVie = pointVie;
             this.PointAction = pointAction;
+            this.Attaque = attaque;
+            this.Defense = defense;
         }
 
         public void Deplacer(Vector2 position, Carte carte)
         {
             this.position = carte.TableauCases[(int)position.X, (int)position.Y];
-        }
-
-        public void InfligeDegats(Entite cible)
-        {
-            
         }
 
 
@@ -95,7 +96,7 @@ namespace SAE_1._01
             }
         }
 
-        public Texture2D Texture
+        public AnimatedSprite Texture
         {
             get
             {
@@ -118,6 +119,32 @@ namespace SAE_1._01
             set
             {
                 this.position = value;
+            }
+        }
+
+        public int Attaque
+        {
+            get
+            {
+                return this.attaque;
+            }
+
+            set
+            {
+                this.attaque = value;
+            }
+        }
+
+        public int Defense
+        {
+            get
+            {
+                return this.defense;
+            }
+
+            set
+            {
+                this.defense = value;
             }
         }
     }

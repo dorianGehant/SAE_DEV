@@ -11,14 +11,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SAE_1._01
 {
-    internal class CreateurCarte : Game
+    internal class CarteTiled : Game
 {
         private TiledMap carte;
         private TiledMapRenderer carteAfficheur;
         private GraphicsDevice graphiques;
         private GraphicsDeviceManager manageurGraphiques;
 
-        public CreateurCarte(string nomMap, Game1 game1)
+        public CarteTiled(string nomMap, Game1 game1)
         {
             Content = game1.Content;
             graphiques = game1.GraphicsDevice;
