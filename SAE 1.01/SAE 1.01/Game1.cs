@@ -29,6 +29,7 @@ namespace SAE_1._01
 
         private CreateurCarte _map01;
         private Texture2D _bordureCase;
+        public Texture2D _bordureCasePossible;
 
         private Joueur _joueur1;
         private Texture2D _texturePersonnage;
@@ -60,6 +61,7 @@ namespace SAE_1._01
             //On load les differents elements
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
             _bordureCase = Content.Load<Texture2D>("contour_case");
+            _bordureCasePossible = Content.Load<Texture2D>("case_proposer.png");
             _textureSelectionne = Content.Load<Texture2D>("New Piskel-1");
             _texturePersonnage = Content.Load<Texture2D>("perso");
             _font = Content.Load<SpriteFont>("Font");

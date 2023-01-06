@@ -181,6 +181,15 @@ namespace SAE_1._01
         {
             texture.Update(deltaseconds);
         }
+        public List<int[]> Possible(Texture2D _bordureCasePossible)
+        {
+            List<int[]> deplacementPossible = PathFinding.findpath(this.Position, grille.TableauCases , this.PointAction);
+            for (int i = 0; i < deplacementPossible.Count-1; i++)
+            {
+                grille.TableauCases[deplacementPossible[i][0],deplacementPossible[i][1]].Texture = _bordureCasePossible;
+            }
+            return deplacementPossible;
+        }
 
     }
 }

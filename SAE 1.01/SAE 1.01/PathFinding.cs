@@ -111,7 +111,7 @@ namespace SAE_1._01
             }
             return temp;
         }
-        static List<int[]> NoeudAdjacentDeplacableAvecPoint(int x, int y, int[,] map, int cout, int maxPoint)
+        static List<int[]> NoeudAdjacentDeplacableAvecPoint(int x, int y, Case[,] map, int cout, int maxPoint)
         {
             List<int[]> noeudProposer = new List<int[]> {
                 new int[] {x,y-1, cout},
@@ -121,7 +121,7 @@ namespace SAE_1._01
             List<int[]> deplacable = new List<int[]> { };
             for (int i = 0; i < noeudProposer.Count; i++)
             {
-                if ((map[noeudProposer[i][1], noeudProposer[i][0]] == 0 || map[noeudProposer[i][1], noeudProposer[i][0]] == 2) && noeudProposer[i][2] <= maxPoint)
+                if (map[noeudProposer[i][1], noeudProposer[i][0]].Collision == false && noeudProposer[i][2] <= maxPoint)
                 {
                     deplacable.Add(noeudProposer[i]);
                 }
@@ -227,14 +227,14 @@ namespace SAE_1._01
             chemin.Reverse();
             return chemin;
         }
-        public static List<int[]> findpath(int departX, int departY, int[,] carte, int maxPoint)
+        public static List<int[]> findpath(Case depart, Case[,] carte, int maxPoint)
         {
             int cout = 0;
 
 
             List<int[]> resultat = new List<int[]> { };
             List<int[]> parcour = new List<int[]> { };
-            parcour.Add(new int[] { departX, departY, cout });
+            parcour.Add(new int[] { depart.X, depart.Y, cout });
 
             while (parcour.Count != 0)
             {
