@@ -123,7 +123,7 @@ namespace SAE_1._01
             List<int[]> deplacable = new List<int[]> { };
             for (int i = 0; i < noeudProposer.Count; i++)
             {
-                if (map[noeudProposer[i][1], noeudProposer[i][0]].Collision == false && noeudProposer[i][2] <= maxPoint)
+                if (noeudProposer[i][0] >= 0 && noeudProposer[i][0] < map.GetLength(1) && noeudProposer[i][1] >= 0 && noeudProposer[i][1] < map.GetLength(0) && map[noeudProposer[i][1], noeudProposer[i][0]].Collision == false && noeudProposer[i][2] <= maxPoint)
                 {
                     deplacable.Add(noeudProposer[i]);
                 }
