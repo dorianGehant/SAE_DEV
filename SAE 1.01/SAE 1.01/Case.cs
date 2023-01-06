@@ -17,7 +17,7 @@ namespace SAE_1._01
         private Color couleur;
         private bool collision = false;
 
-        public Case(int x, int y, Texture2D texture,CreateurCarte carte)
+        public Case(int x, int y, Texture2D texture)
         {
             this.X = x;
             this.Y = y;
