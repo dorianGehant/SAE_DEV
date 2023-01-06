@@ -142,11 +142,11 @@ namespace SAE_1._01
 
         public void Move(Case c)
         {
-            if(c.movable == true)
+            if(c.Collision == false)
             {
-                Vector2 pos = this.GetPositionCase(grille.TailleCase);
-                grille.TableauCases[(int)pos.X, (int)pos.Y].movable = true;
-                c.movable = false;
+                Vector2 pos = new Vector2(this.position.X,this.position.Y);
+                grille.TableauCases[(int)pos.X, (int)pos.Y].Collision = false;
+                c.Collision = true;
                 this.Position = c;
             }
             
@@ -169,7 +169,7 @@ namespace SAE_1._01
 
         public void Afficher(SpriteBatch batch)
         {
-            batch.Draw(this.texture, new Vector2(Position.X, Position.Y));
+            batch.Draw(this.texture, new Vector2(Position.X * this.grille.TailleCase, Position.Y * this.grille.TailleCase));
         }
 
         public void PlayAnim(string anim)

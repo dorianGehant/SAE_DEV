@@ -20,7 +20,7 @@ namespace SAE_1._01
 
         public void Reflechis()
         {
-            this.Move(this.grille.TableauCases[(int)this.GetPositionCase(grille.TailleCase).X+1, 0]);
+            this.Move(this.grille.TableauCases[(int)this.Position.X+1, 0]);
             this.gameManager.ProchaineEntite();
         }
 }

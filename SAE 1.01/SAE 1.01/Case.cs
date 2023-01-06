@@ -15,15 +15,15 @@ namespace SAE_1._01
         private int y;
         private Texture2D texture;
         private Color couleur;
-      
+        private bool collision = false;
 
-        public Case(int x, int y, Texture2D texture)
+        public Case(int x, int y, Texture2D texture,CreateurCarte carte)
         {
             this.X = x;
             this.Y = y;
             this.Texture = texture;
             this.Couleur = Color.Transparent;
-            this.TryCollision(carte);
+            //this.TryCollision(carte);
         }
 
         public int X
