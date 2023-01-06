@@ -11,7 +11,7 @@ namespace SAE_1._01
 {
     internal class Entite
     {
-        public const float SPEED_BETWEEN_CASE = 0.5f;
+        public const float SPEED_BETWEEN_CASE = 0.3f;
         public float TimeNextCase = SPEED_BETWEEN_CASE;
         private string nom;
         private int pointVie;
@@ -174,7 +174,7 @@ namespace SAE_1._01
 
         public void Afficher(SpriteBatch batch)
         {
-            batch.Draw(this.texture, new Vector2(Position.X * this.grille.TailleCase, Position.Y * this.grille.TailleCase));
+            batch.Draw(this.texture, new Vector2(Position.X * this.grille.TailleCase + grille.TailleCase/2, Position.Y * this.grille.TailleCase + grille.TailleCase / 2));
         }
 
         public void PlayAnim(string anim)
