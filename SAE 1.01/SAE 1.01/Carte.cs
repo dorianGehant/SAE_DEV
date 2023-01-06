@@ -84,7 +84,7 @@ namespace SAE_1._01
             {
                 for (int j = 0; j < hauteur; j++)
                 {
-                    TableauCases[i, j] = new Case(i, j, text, carte);
+                    TableauCases[i, j] = new Case(i, j, text);
                 }
             }
         }

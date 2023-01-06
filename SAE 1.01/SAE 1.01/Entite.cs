@@ -154,6 +154,8 @@ namespace SAE_1._01
             }
             
         }
+       
+
 
         public Vector2 GetPositionCase(int tailleCase)
         {
@@ -191,7 +193,7 @@ namespace SAE_1._01
         }
         public bool MoveChemin(float deltaSeconds)
         {
-            if (chemin.Count == 0 || chemin == null)
+            if (chemin == null || chemin.Count == 0)
                 return false;
             TimeNextCase -= deltaSeconds;
             if (TimeNextCase <= 0)
@@ -207,7 +209,20 @@ namespace SAE_1._01
 
         public void Chemin_A_Star(Case depart,Case arrive)
         {
+           
             List<int[]> res = PathFinding.A_star(depart, arrive, this.grille.TableauCases);
+            List<Case> chemin = new List<Case>();
+            for (int i = 0; i < res.Count; i++)
+            {
+                int x = res[i][1];
+                int y = res[i][0];
+                chemin.Add(this.grille.TableauCases[x, y]);
+                Console.WriteLine(x+""+y);
+            }
+            SetChemin(chemin);
+            Console.WriteLine("Coordonne depart" + chemin[0].X + " " + chemin[0].Y);
+            Console.WriteLine("Coordonne arrive" + chemin[chemin.Count-1].X + " " + chemin[chemin.Count-1].Y);
+
         }
 
     }

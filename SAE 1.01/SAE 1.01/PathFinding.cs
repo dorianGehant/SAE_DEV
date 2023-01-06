@@ -104,8 +104,10 @@ namespace SAE_1._01
             List<Noeud> temp = new List<Noeud>();
             foreach (Noeud noeud in noeudProposer)
             {
-                if (map[noeud.PosY,noeud.PosX].Collision == false)
+
+                if (noeud.PosX >= 0 && noeud.PosX < map.GetLength(1) && noeud.PosY >=0 && noeud.PosY < map.GetLength(0)&&map[noeud.PosY, noeud.PosX].Collision == false)
                 {
+                    //Console.WriteLine("noeud DEDANS: " + noeud.PosX + " " + noeud.PosY);
                     temp.Add(noeud);
                 }
             }
