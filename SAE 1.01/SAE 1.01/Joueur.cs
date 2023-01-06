@@ -13,8 +13,8 @@ namespace SAE_1._01
     {
         private List<Sort> sorts;
         public AnimatedSprite sprite;
-        public Joueur(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int attaque, int defense)
-            : base(spritesheet, nom, position, pointVie, pointAction, attaque, defense)
+        public Joueur(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int attaque, int defense, Carte grille, GameManager gm)
+            : base(spritesheet, nom, position, pointVie, pointAction, attaque, defense, grille, gm)
         {
             sprite = new AnimatedSprite(spritesheet);
             this.PlayAnim("attaque");
@@ -25,9 +25,7 @@ namespace SAE_1._01
         {
             this.Position = c;
         }
-
-        public Joueur(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction,Carte grille,GameManager gm)
-            : base(spritesheet, nom, position, pointVie, pointAction,grille,gm)
+        
         public void Afficher(SpriteBatch batch)
         {
             batch.Draw(this.sprite, new Vector2(Position.X, Position.Y));
