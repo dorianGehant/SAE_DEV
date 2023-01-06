@@ -15,7 +15,7 @@ namespace SAE_1._01
     public class Game1 : Game
     {
         
-        const int LONGUEUR_CASE = 13, HAUTEUR_CASE = 13,TAILLE_CASE = 25;
+        const int LONGUEUR_CASE = 30, HAUTEUR_CASE = 30,TAILLE_CASE = 32;
         public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private MouseState _etatSouris;
@@ -70,7 +70,7 @@ namespace SAE_1._01
 
 
             //creation des objets utiles
-            _map01 = new CreateurCarte("mapaTest", this);
+            _map01 = new CreateurCarte("mapPrincipale", this);
             selectionne = new Case(-100, -100, _textureSelectionne);
             cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
             
