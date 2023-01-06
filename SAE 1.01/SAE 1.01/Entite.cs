@@ -12,6 +12,8 @@ namespace SAE_1._01
 
     internal class Entite
     {
+        public const float SPEED_BETWEEN_CASE = 0.5f;
+        public float TimeNextCase = SPEED_BETWEEN_CASE;
         private string nom;
         private int pointVie;
         private int pointAction;
@@ -22,6 +24,7 @@ namespace SAE_1._01
         public GameManager gameManager;
         Joueur j;
         Ennemi e;
+        List<Case> chemin;
 
         protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction,Carte carte,GameManager gm)
         {
@@ -152,6 +155,8 @@ namespace SAE_1._01
             }
             
         }
+       
+
 
         public Vector2 GetPositionCase(int tailleCase)
         {
@@ -181,6 +186,44 @@ namespace SAE_1._01
         public void UpdateAnim(float deltaseconds)
         {
             texture.Update(deltaseconds);
+        }
+
+        public void SetChemin(List<Case> c)
+        {
+            chemin = c;
+        }
+        public bool MoveChemin(float deltaSeconds)
+        {
+            if (chemin == null || chemin.Count == 0)
+                return false;
+            TimeNextCase -= deltaSeconds;
+            if (TimeNextCase <= 0)
+            {
+                this.Move(chemin[0]);
+                chemin.RemoveAt(0);
+                TimeNextCase = SPEED_BETWEEN_CASE;
+
+            }
+            return true;
+
+        }
+
+        public void Chemin_A_Star(Case depart,Case arrive)
+        {
+           
+            List<int[]> res = PathFinding.A_star(depart, arrive, this.grille.TableauCases);
+            List<Case> chemin = new List<Case>();
+            for (int i = 0; i < res.Count; i++)
+            {
+                int x = res[i][1];
+                int y = res[i][0];
+                chemin.Add(this.grille.TableauCases[x, y]);
+                Console.WriteLine(x+""+y);
+            }
+            SetChemin(chemin);
+            Console.WriteLine("Coordonne depart" + chemin[0].X + " " + chemin[0].Y);
+            Console.WriteLine("Coordonne arrive" + chemin[chemin.Count-1].X + " " + chemin[chemin.Count-1].Y);
+
         }
 
     }
