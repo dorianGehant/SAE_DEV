@@ -18,7 +18,7 @@ namespace SAE_1._01
         {
             SetJoueur(this);
             
-            this.PlayAnim("attaque");
+            this.PlayAnim("Idle");
             jouable = true;
             //this.sorts = new List<Sort>(sorts);
         }

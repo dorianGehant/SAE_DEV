@@ -8,6 +8,7 @@ using MonoGame.Extended.Content;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
 using MonoGame.Extended.Tiled;
+using System.Collections.Generic;
 
 namespace SAE_1._01
 {
@@ -77,8 +78,9 @@ namespace SAE_1._01
             gameManager.AjouterCombattant(j2);
             ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, cases, gameManager);
             gameManager.AjouterCombattant(ennemi);
+            List<Case> c = new List<Case> { cases.TableauCases[0, 1], cases.TableauCases[0, 2], cases.TableauCases[0, 3] };
+            j1.SetChemin(c);
 
-            
 
             //valeur des tailles 
             _longueurCase = (int)_map01.TailleCase().X;
@@ -107,7 +109,10 @@ namespace SAE_1._01
             //positions souris
             int x = (_etatSouris.X - Window.Position.X) / TAILLE_CASE;
             int y = (_etatSouris.Y + - Window.Position.Y) / TAILLE_CASE;
-
+            if(j1.MoveChemin(deltaSeconds) == true)
+            {
+                //ici le joueur est en chemin
+            }
             //on verifie si la souris se trouve bien sur une case
             if(x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
             {
