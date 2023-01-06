@@ -68,8 +68,9 @@ namespace SAE_1._01
 
             //creation des objets utiles
             _map01 = new CreateurCarte("mapaTest", this);
-            selectionne = new Case(-100, -100, _textureSelectionne,_map01);
+            selectionne = new Case(-100, -100, _textureSelectionne);
             cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
+            
             gameManager = new GameManager();
             
             j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[2,2], 1, 1, cases, gameManager);

@@ -93,7 +93,7 @@ namespace SAE_1._01
                 this.carte = value;
             }
         }
-        static List<Noeud> NoeudAdjacentDeplacable(int x, int y, int[,] map)
+        static List<Noeud> NoeudAdjacentDeplacable(int x, int y, Case[,] map)
         {
             List<Noeud> noeudProposer = new List<Noeud>() {
             new Noeud (x, y - 1 ),
@@ -104,19 +104,45 @@ namespace SAE_1._01
             List<Noeud> temp = new List<Noeud>();
             foreach (Noeud noeud in noeudProposer)
             {
-                if (map[noeud.PosY,noeud.PosX] == 0 || map[noeud.PosY,noeud.PosX] == 2 || map[noeud.PosY,noeud.PosX] == 3)
+                if (map[noeud.PosY,noeud.PosX].Collision == false)
                 {
                     temp.Add(noeud);
                 }
             }
             return temp;
         }
-        public static List<int[]> A_star(int debutX, int debutY, int finX, int finY, int[,] carte)
+        static List<int[]> NoeudAdjacentDeplacableAvecPoint(int x, int y, int[,] map, int cout, int maxPoint)
+        {
+            List<int[]> noeudProposer = new List<int[]> {
+                new int[] {x,y-1, cout},
+                new int[] {x,y+1, cout},
+                new int[] {x-1,y, cout},
+                new int[] {x+1,y, cout}};
+            List<int[]> deplacable = new List<int[]> { };
+            for (int i = 0; i < noeudProposer.Count; i++)
+            {
+                if ((map[noeudProposer[i][1], noeudProposer[i][0]] == 0 || map[noeudProposer[i][1], noeudProposer[i][0]] == 2) && noeudProposer[i][2] <= maxPoint)
+                {
+                    deplacable.Add(noeudProposer[i]);
+                }
+            }
+            return deplacable;
+        }
+        static List<int[]> Pop(List<int[]> file)
+        {
+            for (int i = 0; i < file.Count - 1; i++)
+            {
+                file[i] = file[i + 1];
+            }
+            file.RemoveAt(file.Count - 1);
+            return file;
+        }
+        public static List<int[]> A_star(Case depart, Case arrive, Case[,] carte)
         {
             //les -1 sont les bordures, 2 le début, 3 la fin, 1 les obstacles, 0 rien
             Noeud current = null;
-            Noeud debut = new Noeud(1, 1);
-            Noeud fin = new Noeud(1, 4);
+            Noeud debut = new Noeud(depart.X, depart.Y);
+            Noeud fin = new Noeud(arrive.X, arrive.Y);
             List<Noeud> openList = new List<Noeud>();
             List<Noeud> closedList = new List<Noeud>();
             int g = 0; //-> G est la distance parcouru du début
@@ -200,6 +226,51 @@ namespace SAE_1._01
             //Console.SetCursorPosition(fin.PosX + 1, fin.PosY + 1);
             chemin.Reverse();
             return chemin;
+        }
+        public static List<int[]> findpath(int departX, int departY, int[,] carte, int maxPoint)
+        {
+            int cout = 0;
+
+
+            List<int[]> resultat = new List<int[]> { };
+            List<int[]> parcour = new List<int[]> { };
+            parcour.Add(new int[] { departX, departY, cout });
+
+            while (parcour.Count != 0)
+            {
+                cout = parcour[0][2] + 1;
+                foreach (int[] elt in NoeudAdjacentDeplacableAvecPoint(parcour[0][0], parcour[0][1], carte, cout, maxPoint))
+                {
+                    //ont part du principe que l'élément adjacent n'est pas déjà dans le résultat et le parcour mais ont va le vérifier
+                    bool estPas = true;
+                    for (int i = 0; i < resultat.Count; i++)
+                    {
+                        if (elt[0] == resultat[i][0] && elt[1] == resultat[i][1])
+                        {
+                            estPas = false;
+                        }
+                    }
+                    for (int i = 0; i < parcour.Count; i++)
+                    {
+                        if (elt[0] == parcour[i][0] && elt[1] == parcour[i][1])
+                        {
+                            if (elt[2] >= parcour[i][2])
+                            {
+                                parcour[i] = elt;
+                            }
+                            estPas = false;
+                        }
+                    }
+                    if (estPas == true)
+                    {
+                        parcour.Add(elt);
+                    }
+                }
+                resultat.Add(parcour[0]);
+                parcour = Pop(parcour);
+            }
+            resultat.Reverse();
+            return resultat;
         }
     }
 }
