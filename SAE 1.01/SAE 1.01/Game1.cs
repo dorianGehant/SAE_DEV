@@ -7,6 +7,7 @@ using System.Diagnostics;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Tiled;
 
 namespace SAE_1._01
 {

@@ -93,7 +93,7 @@ namespace SAE_1._01
                 this.carte = value;
             }
         }
-        static List<Noeud> NoeudAdjacentDeplacable(int x, int y, int[][] map)
+        static List<Noeud> NoeudAdjacentDeplacable(int x, int y, int[,] map)
         {
             List<Noeud> noeudProposer = new List<Noeud>() {
             new Noeud (x, y - 1 ),
@@ -104,14 +104,14 @@ namespace SAE_1._01
             List<Noeud> temp = new List<Noeud>();
             foreach (Noeud noeud in noeudProposer)
             {
-                if (map[noeud.PosY][noeud.PosX] == 0 || map[noeud.PosY][noeud.PosX] == 2 || map[noeud.PosY][noeud.PosX] == 3)
+                if (map[noeud.PosY,noeud.PosX] == 0 || map[noeud.PosY,noeud.PosX] == 2 || map[noeud.PosY,noeud.PosX] == 3)
                 {
                     temp.Add(noeud);
                 }
             }
             return temp;
         }
-        public static List<int[]> A_star(int debutX, int debutY, int finX, int finY, int[][] carte)
+        public static List<int[]> A_star(int debutX, int debutY, int finX, int finY, int[,] carte)
         {
             //les -1 sont les bordures, 2 le début, 3 la fin, 1 les obstacles, 0 rien
             Noeud current = null;

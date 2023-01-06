@@ -15,12 +15,12 @@ namespace SAE_1._01
         private int tailleCase;
         private Case[,] tableauCases;
 
-        public Carte(int longueur, int hauteur, int tailleXase, Texture2D texturecase)
+        public Carte(int longueur, int hauteur, int tailleXase, Texture2D texturecase, CreateurCarte carte)
         {
             this.Longueur = longueur;
             this.Hauteur = hauteur;
             TailleCase = tailleXase;
-            CreateTableau(texturecase);
+            CreateTableau(texturecase, carte);
             
 
         }
@@ -68,23 +68,23 @@ namespace SAE_1._01
         {
             get
             {
-                return tailleCase;
+                return this.tailleCase;
             }
 
             set
             {
-                tailleCase = value;
+                this.tailleCase = value;
             }
         }
 
-        void CreateTableau(Texture2D text)
+        void CreateTableau(Texture2D text, CreateurCarte carte)
         {
             this.TableauCases = new Case[Longueur, Hauteur];
             for (int i = 0; i < Longueur; i++)
             {
                 for (int j = 0; j < hauteur; j++)
                 {
-                    TableauCases[i, j] = new Case(i * TailleCase, j * TailleCase, text);
+                    TableauCases[i, j] = new Case(i, j, text, carte);
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace SAE_1._01
                 for (int j = 0; j < hauteur; j++)
                 {
                     Case c = tableauCases[i, j];
-                    Vector2 pos = new Vector2(c.X, c.Y);
+                    Vector2 pos = new Vector2(c.X * TailleCase, c.Y * TailleCase);
                     spriteB.Draw(c.Texture, pos,Color.White);
                 }
             }
