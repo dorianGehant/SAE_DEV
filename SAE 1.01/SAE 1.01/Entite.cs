@@ -15,20 +15,25 @@ namespace SAE_1._01
         private string nom;
         private int pointVie;
         private int pointAction;
-        private int attaque;
-        private int defense;
         private AnimatedSprite texture;
         private Case position;
+        public bool jouable;
+        public Carte grille;
+        public GameManager gameManager;
+        Joueur j;
+        Ennemi e;
 
-        protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction, int attaque, int defense)
+        protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction,Carte carte,GameManager gm)
         {
             this.texture = new AnimatedSprite(spriteSheet);
             this.Nom = nom;
             this.Position = position;
             this.PointVie = pointVie;
             this.PointAction = pointAction;
-            this.Attaque = attaque;
-            this.Defense = defense;
+            this.grille = carte;
+            this.gameManager = gm;
+            Vector2 pos = this.GetPositionCase(grille.TailleCase);
+            this.Move(grille.TableauCases[(int)pos.X, (int)pos.Y]);
         }
 
         public void Deplacer(Vector2 position, Carte carte)
@@ -54,6 +59,8 @@ namespace SAE_1._01
         {
             return this.Nom + this.PointVie + this.PointAction;
         }
+
+
 
 
 
@@ -122,30 +129,59 @@ namespace SAE_1._01
             }
         }
 
-        public int Attaque
+        public void JouerTour()
         {
-            get
+            if(jouable == true)
             {
-                return this.attaque;
+                j.PeutAction();
             }
-
-            set
+            else
             {
-                this.attaque = value;
+                e.Reflechis();
             }
         }
 
-        public int Defense
+        public void Move(Case c)
         {
-            get
+            if(c.Collision == false)
             {
-                return this.defense;
+                Vector2 pos = new Vector2(this.position.X,this.position.Y);
+                grille.TableauCases[(int)pos.X, (int)pos.Y].Collision = false;
+                c.Collision = true;
+                this.Position = c;
             }
-
-            set
-            {
-                this.defense = value;
-            }
+            
         }
+
+        public Vector2 GetPositionCase(int tailleCase)
+        {
+            return new Vector2(this.position.X / tailleCase,this.position.Y / tailleCase);
+        }
+
+        public void SetJoueur(Joueur player)
+        {
+            j = player;
+        }
+
+        public void SetEnnemi(Ennemi ennemi)
+        {
+            e = ennemi;
+        }
+
+        public void Afficher(SpriteBatch batch)
+        {
+            batch.Draw(this.texture, new Vector2(Position.X * this.grille.TailleCase, Position.Y * this.grille.TailleCase));
+        }
+
+        public void PlayAnim(string anim)
+        {
+            texture.Play(anim);
+        }
+
+        public void UpdateAnim(float deltaseconds)
+        {
+            texture.Update(deltaseconds);
+        }
+
     }
 }

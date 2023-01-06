@@ -17,6 +17,20 @@ namespace SAE_1._01
         private TiledMapRenderer carteAfficheur;
         private GraphicsDevice graphiques;
         private GraphicsDeviceManager manageurGraphiques;
+        private TiledMapTileLayer collisionLayer;
+
+        public TiledMapTileLayer CollisionLayer
+        {
+            get
+            {
+                return this.collisionLayer;
+            }
+
+            set
+            {
+                this.collisionLayer = value;
+            }
+        }
 
         public CarteTiled(string nomMap, Game1 game1)
         {
@@ -25,7 +39,10 @@ namespace SAE_1._01
             graphiques.BlendState = BlendState.AlphaBlend;
             manageurGraphiques = game1._graphics;
 
+            //lad de la carte
             carte = Content.Load<TiledMap>(nomMap);
+            //load des collissions
+            CollisionLayer = carte.GetLayer<TiledMapTileLayer>("collisionable");
             carteAfficheur = new TiledMapRenderer(graphiques, carte);
         }
 

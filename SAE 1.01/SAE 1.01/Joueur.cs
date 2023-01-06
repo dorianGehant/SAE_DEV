@@ -26,6 +26,8 @@ namespace SAE_1._01
             this.Position = c;
         }
 
+        public Joueur(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction,Carte grille,GameManager gm)
+            : base(spritesheet, nom, position, pointVie, pointAction,grille,gm)
         public void Afficher(SpriteBatch batch)
         {
             batch.Draw(this.sprite, new Vector2(Position.X, Position.Y));
@@ -38,7 +40,19 @@ namespace SAE_1._01
 
         public void UpdateAnim(float deltaseconds)
         {
+            SetJoueur(this);
+            
+            this.PlayAnim("attaque");
+            jouable = true;
+            //this.sorts = new List<Sort>(sorts);
             sprite.Update(deltaseconds);
+        }
+
+        
+
+        public void PeutAction()
+        {
+
         }
     }
 }

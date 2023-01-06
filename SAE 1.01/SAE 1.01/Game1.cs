@@ -7,6 +7,7 @@ using System.Diagnostics;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Tiled;
 
 namespace SAE_1._01
 {
@@ -35,6 +36,11 @@ namespace SAE_1._01
         Case selectionne;
         Carte cases;
         Joueur j1;
+        Joueur j2;
+        Ennemi ennemi;
+        GameManager gameManager;
+        SpriteFont _font;
+        bool KeyPressedE = false;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -51,6 +57,12 @@ namespace SAE_1._01
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            //On load les differents elements
+            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
+            _bordureCase = Content.Load<Texture2D>("contour_case");
+            _textureSelectionne = Content.Load<Texture2D>("New Piskel-1");
+            _texturePersonnage = Content.Load<Texture2D>("perso");
+            _font = Content.Load<SpriteFont>("Font");
 
             //On load les differents elements
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
@@ -59,16 +71,29 @@ namespace SAE_1._01
             _texturePersonnage = Content.Load<Texture2D>("perso");
 
             //creation des objets utiles
-            _map01 = new CarteTiled("mapPrincipale", this);
-            selectionne = new Case(-100, -100, _textureSelectionne);
-            cases = new Carte(_map01.get, HAUTEUR_CASE, TAILLE_CASE, _bordureCase);
-            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[0, 0], 1, 1, 5, 5);
+            _map01 = new CreateurCarte("mapaTest", this);
+            selectionne = new Case(-100, -100, _textureSelectionne,_map01);
+            cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
+            gameManager = new GameManager();
+            
+            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[2,2], 1, 1, cases, gameManager);
+            j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 1, cases, gameManager);
+            gameManager.AjouterCombattant(j1);
+            gameManager.AjouterCombattant(j2);
+            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, cases, gameManager);
+            gameManager.AjouterCombattant(ennemi);
+
+            
 
             //valeur des tailles 
             _longueurCase = (int)_map01.TailleCase().X;
             _hauteurCase = (int)_map01.TailleCase().Y;
             _nbLignesCarte = (int)_map01.TailleCarte().Y / _hauteurCase;
             _nbColonnesCarte = (int)_map01.TailleCarte().X / _longueurCase;
+
+            gameManager.CommencerJeu();
+
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -79,8 +104,10 @@ namespace SAE_1._01
 
             //les inputs
             var simulation = Inputs.Use<IMouseSimulation>();
+            var simulationKey = Inputs.Use<IKeyboardSimulation>();
             _etatClavier = Keyboard.GetState();
             _etatSouris = Mouse.GetState();
+            
 
             //positions souris
             int x = (_etatSouris.X - Window.Position.X) / TAILLE_CASE;
@@ -97,12 +124,19 @@ namespace SAE_1._01
                 if (simulation.IsMouseDown(InputMouseButtons.Left))
                 {
                     //On bouge le joueur ou on clique
-                    j1.MovePlayer(cases.TableauCases[x,y]);
+                    Entite jouable = gameManager.GetEntiteTour();
+                    jouable.Move(cases.TableauCases[x,y]);
                 }
-            }    
+            }
 
+            if (simulationKey.IsKeyDown(InputKeys.E) && KeyPressedE == false)
+            {
+                gameManager.ProchaineEntite();
+            }
+            KeyPressedE = simulationKey.IsKeyDown(InputKeys.E);
             //mise a jour / update
             j1.UpdateAnim(deltaSeconds);
+            j2.UpdateAnim(deltaSeconds);
             _map01.MiseAJour(gameTime);
 
             base.Update(gameTime);
@@ -118,6 +152,9 @@ namespace SAE_1._01
             cases.AfficherMap(_spriteBatch);
             _spriteBatch.Draw(selectionne.Texture, new Vector2(selectionne.X, selectionne.Y), Color.White);
             j1.Afficher(_spriteBatch);
+            j2.Afficher(_spriteBatch);
+            ennemi.Afficher(_spriteBatch);
+            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
             _spriteBatch.End();
             
             base.Draw(gameTime);
