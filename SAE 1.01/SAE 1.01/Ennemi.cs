@@ -11,8 +11,8 @@ namespace SAE_1._01
 {
     internal class Ennemi : Entite
 {
-        public Ennemi(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int attaque, int defense, Carte grille,GameManager gm)
-            : base(spritesheet, nom, position, pointVie, pointAction, attaque, defense, grille,gm)
+        public Ennemi(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction,Carte grille,GameManager gm)
+            : base(spritesheet, nom, position, pointVie, pointAction,grille,gm)
         {
             SetEnnemi(this);
             jouable = false;

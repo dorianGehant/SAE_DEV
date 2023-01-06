@@ -9,7 +9,6 @@ using MonoGame.Extended.Sprites;
 
 namespace SAE_1._01
 {
-
     internal class Entite
     {
         public const float SPEED_BETWEEN_CASE = 0.3f;
@@ -17,8 +16,6 @@ namespace SAE_1._01
         private string nom;
         private int pointVie;
         private int pointAction;
-        private int attaque;
-        private int defense;
         private AnimatedSprite texture;
         private Case position;
         public bool jouable;
@@ -29,7 +26,7 @@ namespace SAE_1._01
         List<Case> chemin;
         List<int[]> cases_possibles;
 
-        protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction, int attaque, int defense, Carte carte,GameManager gm)
+        protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction,Carte carte,GameManager gm)
         {
             this.texture = new AnimatedSprite(spriteSheet);
             this.Nom = nom;
@@ -132,32 +129,6 @@ namespace SAE_1._01
             set
             {
                 this.position = value;
-            }
-        }
-
-        public int Attaque
-        {
-            get
-            {
-                return this.attaque;
-            }
-
-            set
-            {
-                this.attaque = value;
-            }
-        }
-
-        public int Defense
-        {
-            get
-            {
-                return this.defense;
-            }
-
-            set
-            {
-                this.defense = value;
             }
         }
 

@@ -68,8 +68,9 @@ namespace SAE_1._01
             _texturePersonnage = Content.Load<Texture2D>("perso");
             _font = Content.Load<SpriteFont>("Font");
 
+
             //creation des objets utiles
-            _map01 = new CreateurCarte("mapPrincipale", this);
+            _map01 = new CreateurCarte("mapaTest", this);
             selectionne = new Case(-100, -100, _textureSelectionne);
             cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
             
@@ -79,7 +80,7 @@ namespace SAE_1._01
             j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 7, cases, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, 2, 2, cases, gameManager);
+            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, cases, gameManager);
             gameManager.AjouterCombattant(ennemi);
             
 
