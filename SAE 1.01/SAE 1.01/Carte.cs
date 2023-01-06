@@ -19,7 +19,7 @@ namespace SAE_1._01
         {
             this.Longueur = longueur;
             this.Hauteur = hauteur;
-            tailleCase = tailleXase;
+            TailleCase = tailleXase;
             CreateTableau(texturecase);
             
 
@@ -64,6 +64,19 @@ namespace SAE_1._01
             }
         }
 
+        public int TailleCase
+        {
+            get
+            {
+                return tailleCase;
+            }
+
+            set
+            {
+                tailleCase = value;
+            }
+        }
+
         void CreateTableau(Texture2D text)
         {
             this.TableauCases = new Case[Longueur, Hauteur];
@@ -71,7 +84,7 @@ namespace SAE_1._01
             {
                 for (int j = 0; j < hauteur; j++)
                 {
-                    TableauCases[i, j] = new Case(i * tailleCase, j * tailleCase, text);
+                    TableauCases[i, j] = new Case(i * TailleCase, j * TailleCase, text);
                 }
             }
         }

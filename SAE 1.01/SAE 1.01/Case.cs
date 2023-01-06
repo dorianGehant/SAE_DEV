@@ -14,6 +14,7 @@ namespace SAE_1._01
         private int y;
         private Texture2D texture;
         private Color couleur;
+      
 
         public Case(int x, int y, Texture2D texture)
         {
