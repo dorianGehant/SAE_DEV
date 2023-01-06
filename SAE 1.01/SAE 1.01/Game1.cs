@@ -7,6 +7,7 @@ using System.Diagnostics;
 using MonoGame.Extended.Content;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Tiled;
 
 namespace SAE_1._01
 {
@@ -51,25 +52,25 @@ namespace SAE_1._01
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            
-            //valeur des tailles 
-            _longueurCase = (int)_map01.TailleCase().X;
-            _hauteurCase = (int)_map01.TailleCase().Y;
-            _nbLignesCarte = (int)_map01.TailleCarte().Y / _hauteurCase;
-            _nbColonnesCarte = (int)_map01.TailleCarte().X / _longueurCase;
-
-
             //On load les differents elements
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
             _bordureCase = Content.Load<Texture2D>("contour_case");
             _textureSelectionne = Content.Load<Texture2D>("New Piskel-1");
             _texturePersonnage = Content.Load<Texture2D>("perso");
 
+
             //creation des objets utiles
-            selectionne = new Case(-100, -100, _textureSelectionne);
             _map01 = new CreateurCarte("mapaTest", this);
+            selectionne = new Case(15, 15, _textureSelectionne, _map01);
+            cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase, _map01);
             j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[0, 0], 1, 1);
-            cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase);
+
+            // valeur des tailles
+            _longueurCase = (int)_map01.TailleCase().X;
+            _hauteurCase = (int)_map01.TailleCase().Y;
+            _nbLignesCarte = (int)_map01.TailleCarte().Y / _hauteurCase;
+            _nbColonnesCarte = (int)_map01.TailleCarte().X / _longueurCase;
+
 
 
         }

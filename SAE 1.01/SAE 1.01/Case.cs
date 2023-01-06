@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Tiled;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,15 @@ namespace SAE_1._01
         private int y;
         private Texture2D texture;
         private Color couleur;
+        private bool collision;
 
-        public Case(int x, int y, Texture2D texture)
+        public Case(int x, int y, Texture2D texture, CreateurCarte carte)
         {
             this.X = x;
             this.Y = y;
             this.Texture = texture;
-            this.couleur = Color.Transparent;
+            this.Couleur = Color.Transparent;
+            this.TryCollision(carte);
         }
 
         public int X
@@ -75,9 +78,32 @@ namespace SAE_1._01
             }
         }
 
+        public bool Collision
+        {
+            get
+            {
+                return this.collision;
+            }
+
+            set
+            {
+                this.collision = value;
+            }
+        }
+
         public void Action()
         {
             this.x = 500;
+        }
+
+        public void TryCollision(CreateurCarte carte)
+        {
+            TiledMapTile? tile;
+            if (carte.CollisionLayer.TryGetTile((ushort)X, (ushort)Y, out tile) == false)
+                this.Collision = false;
+            if (!tile.Value.IsBlank)
+                this.Collision = true;
+            this.Collision = false;
         }
     }
 }
