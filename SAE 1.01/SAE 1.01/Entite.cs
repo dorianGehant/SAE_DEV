@@ -16,14 +16,21 @@ namespace SAE_1._01
         private int pointAction;
         private AnimatedSprite texture;
         private Case position;
+        public bool jouable;
+        public Carte grille;
+        public GameManager gameManager;
+        Joueur j;
+        Ennemi e;
 
-        protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction)
+        protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction,Carte carte,GameManager gm)
         {
             this.texture = new AnimatedSprite(spriteSheet);
             this.Nom = nom;
             this.Position = position;
             this.PointVie = pointVie;
             this.PointAction = pointAction;
+            this.grille = carte;
+            this.gameManager = gm;
         }
 
         public void Deplacer(Vector2 position, Carte carte)
@@ -49,6 +56,8 @@ namespace SAE_1._01
         {
             return this.Nom + this.PointVie + this.PointAction;
         }
+
+
 
 
 
@@ -116,5 +125,53 @@ namespace SAE_1._01
                 this.position = value;
             }
         }
+
+        public void JouerTour()
+        {
+            if(jouable == true)
+            {
+                j.PeutAction();
+            }
+            else
+            {
+                e.Reflechis();
+            }
+        }
+
+        public void Move(Case c)
+        {
+            this.Position = c;
+        }
+
+        public Vector2 GetPositionCase(int tailleCase)
+        {
+            return new Vector2(this.position.X / tailleCase,this.position.Y / tailleCase);
+        }
+
+        public void SetJoueur(Joueur player)
+        {
+            j = player;
+        }
+
+        public void SetEnnemi(Ennemi ennemi)
+        {
+            e = ennemi;
+        }
+
+        public void Afficher(SpriteBatch batch)
+        {
+            batch.Draw(this.texture, new Vector2(Position.X, Position.Y));
+        }
+
+        public void PlayAnim(string anim)
+        {
+            texture.Play(anim);
+        }
+
+        public void UpdateAnim(float deltaseconds)
+        {
+            texture.Update(deltaseconds);
+        }
+
     }
 }
