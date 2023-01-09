@@ -122,6 +122,7 @@ namespace SAE_1._01
 
                 //verification clique
                 Entite jouable = gameManager.GetEntiteTour();
+                Console.WriteLine(jouable.Nom);
                 if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x,y]))
                 {
                     //On bouge le joueur ou on clique

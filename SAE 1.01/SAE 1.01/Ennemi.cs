@@ -20,8 +20,8 @@ namespace SAE_1._01
 
         public void Reflechis()
         {
-            this.Chemin_A_Star(this.Position, this.grille.TableauCases[(int)this.Position.X + 1, 0]);
-            this.gameManager.ProchaineEntite();
+            this.Chemin_A_Star(this.Position,this.grille.TableauCases[(int)this.Position.X+1, 0]);
+   
         }
 }
 }
