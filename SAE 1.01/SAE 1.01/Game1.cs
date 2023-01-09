@@ -114,17 +114,19 @@ namespace SAE_1._01
             int y = (_etatSouris.Y + - Window.Position.Y) / TAILLE_CASE;
 
             Entite jouable = gameManager.GetEntiteTour();
-
-            //on verifie si la souris se trouve bien sur une case
-            if (x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
+            
+            //verification si pas d'attente
+            if (jouable.jouable)
             {
+                jouable.Possible(_bordureCasePossible);
+
                 //on met le carre bleu sur la case ou il y a la souris
                 selectionne.X = x;
                 selectionne.Y = y ;
 
-                //verification si pas d'attente
-                if (jouable.jouable)
-                {
+                //on verifie si la souris se trouve bien sur une case
+                if (x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
+                    {
                     //verification clique
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x, y]))
                     {
@@ -139,19 +141,16 @@ namespace SAE_1._01
 
                     }
                 }
-                else
+                if (simulationKey.IsKeyDown(InputKeys.E) && KeyPressedE == false)
                 {
-                    jouable.MoveChemin(deltaSeconds);
-                    if (jouable.jouable)
-                        jouable.Possible(_bordureCasePossible);
+                    jouable.enleverPossible(_bordureCase);
+                    gameManager.ProchaineEntite();
+
                 }
-
             }
-
-            if (simulationKey.IsKeyDown(InputKeys.E) && KeyPressedE == false)
+            else
             {
-                jouable.enleverPossible(_bordureCase);
-                gameManager.ProchaineEntite();
+                jouable.MoveChemin(deltaSeconds);
             }
             KeyPressedE = simulationKey.IsKeyDown(InputKeys.E);
             mouseClick = simulation.IsMouseDown(InputMouseButtons.Left);

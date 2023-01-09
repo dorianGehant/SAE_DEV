@@ -9,6 +9,7 @@ namespace SAE_1._01
 {
     internal class GameManager
 {
+        const int PointAction = 7;
         List<Entite> entitesCombat = new List<Entite>();
         Entite entiteTour;
         Texture2D _bordureCasePossible;
@@ -30,13 +31,14 @@ namespace SAE_1._01
             }
             else
                 index += 1;
+            Console.WriteLine(index);
             SetTour(entitesCombat[index]);
         }
 
         void SetTour(Entite e)
         {
             entiteTour = e;
-            entiteTour.Possible(_bordureCasePossible);
+            e.PointAction = PointAction;
             e.JouerTour();
         }
         int ChercherEntiteIndex(Entite entite)
