@@ -8,13 +8,6 @@ namespace SAE_1._01
 {
     internal class PathFinding
     {
-        private int[][] carte = new int[][] {new int[] {-1,-1,-1,-1,-1,-1,-1},
-                                     new int[] {-1,2,0,0,0,0,-1},
-                                     new int[] {-1,0,0,1,0,0,-1},
-                                     new int[] {-1,1,1,0,0,0,-1},
-                                     new int[] {-1,0,0,1,0,0,-1},
-                                     new int[] {-1,0,0,0,0,0,-1},
-                                     new int[] {-1,-1,-1,-1,-1,-1,-1} };
         private int debutX;
         private int debutY;
         private int finX;
@@ -26,7 +19,6 @@ namespace SAE_1._01
             this.FinY = finY;
             this.DebutY = debutY;
             this.DebutX = debutX;
-            this.Carte = carte;
         }
 
         public int FinX
@@ -81,18 +73,6 @@ namespace SAE_1._01
             }
         }
 
-        public int[][] Carte
-        {
-            get
-            {
-                return this.carte;
-            }
-
-            set
-            {
-                this.carte = value;
-            }
-        }
         static List<Noeud> NoeudAdjacentDeplacable(int x, int y, Case[,] map)
         {
             List<Noeud> noeudProposer = new List<Noeud>() {
@@ -105,7 +85,7 @@ namespace SAE_1._01
             foreach (Noeud noeud in noeudProposer)
             {
 
-                if (noeud.PosX >= 0 && noeud.PosX < map.GetLength(1) && noeud.PosY >=0 && noeud.PosY < map.GetLength(0)&&map[noeud.PosY, noeud.PosX].Collision == false)
+                if (noeud.PosX >= 0 && noeud.PosX < map.GetLength(1) && noeud.PosY >=0 && noeud.PosY < map.GetLength(0) && map[noeud.PosY, noeud.PosX].Collision == false)
                 {
                     //Console.WriteLine("noeud DEDANS: " + noeud.PosX + " " + noeud.PosY);
                     temp.Add(noeud);
@@ -123,7 +103,7 @@ namespace SAE_1._01
             List<int[]> deplacable = new List<int[]> { };
             for (int i = 0; i < noeudProposer.Count; i++)
             {
-                if (noeudProposer[i][0] >= 0 && noeudProposer[i][0] < map.GetLength(1) && noeudProposer[i][1] >= 0 && noeudProposer[i][1] < map.GetLength(0) && map[noeudProposer[i][1], noeudProposer[i][0]].Collision == false && noeudProposer[i][2] <= maxPoint)
+                if (noeudProposer[i][0] >= 0 && noeudProposer[i][0] < map.GetLength(1) && noeudProposer[i][1] >= 0 && noeudProposer[i][1] < map.GetLength(0) && map[noeudProposer[i][0], noeudProposer[i][1]].Collision == false && noeudProposer[i][2] <= maxPoint)
                 {
                     deplacable.Add(noeudProposer[i]);
                 }

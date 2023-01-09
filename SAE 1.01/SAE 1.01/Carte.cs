@@ -22,7 +22,6 @@ namespace SAE_1._01
             TailleCase = tailleXase;
             CreateTableau(texturecase, carte);
             
-
         }
 
         public int Longueur
@@ -84,7 +83,8 @@ namespace SAE_1._01
             {
                 for (int j = 0; j < hauteur; j++)
                 {
-                    TableauCases[i, j] = new Case(i, j, text);
+                    TableauCases[i, j] = new Case(i, j, text, carte);
+
                 }
             }
         }

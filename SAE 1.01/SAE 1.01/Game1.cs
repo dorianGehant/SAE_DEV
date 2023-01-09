@@ -71,7 +71,7 @@ namespace SAE_1._01
 
             //creation des objets utiles
             _map01 = new CreateurCarte("mapPrincipale", this);
-            selectionne = new Case(-100, -100, _textureSelectionne);
+            selectionne = new Case(-100, -100, _textureSelectionne, _map01);
             cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
             
             gameManager = new GameManager(_bordureCasePossible);
@@ -121,16 +121,14 @@ namespace SAE_1._01
                 //on met le carre bleu sur la case ou il y a la souris
                 selectionne.X = x;
                 selectionne.Y = y ;
-
-                //verification si pas d'attente
                 if (jouable.jouable)
                 {
+                    jouable.Possible(_bordureCasePossible);
                     //verification clique
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x, y]))
                     {
                         //On bouge le joueur ou on clique
 
-                        //jouable.Move(cases.TableauCases[x,y]);
                         jouable.enleverPossible(_bordureCase);
                         Console.WriteLine("cases souris " + y + "   " + x);
                         Console.WriteLine("case jouable " + jouable.Position.Y + " " + jouable.Position.X);
@@ -142,8 +140,6 @@ namespace SAE_1._01
                 else
                 {
                     jouable.MoveChemin(deltaSeconds);
-                    if (jouable.jouable)
-                        jouable.Possible(_bordureCasePossible);
                 }
 
             }

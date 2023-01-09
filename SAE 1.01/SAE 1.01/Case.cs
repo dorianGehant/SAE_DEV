@@ -11,19 +11,19 @@ namespace SAE_1._01
 {
     internal class Case
     {
+        public const int ID_TILE_COLLISION = 578;
+
         private int x;
         private int y;
         private Texture2D texture;
-        private Color couleur;
         private bool collision = false;
 
-        public Case(int x, int y, Texture2D texture)
+        public Case(int x, int y, Texture2D texture, CreateurCarte carte)
         {
             this.X = x;
             this.Y = y;
             this.Texture = texture;
-            this.Couleur = Color.Transparent;
-            //this.TryCollision(carte);
+            this.Collision = this.testeCollision(carte);
         }
 
         public int X
@@ -49,19 +49,6 @@ namespace SAE_1._01
             set
             {
                 this.y = value;
-            }
-        }
-
-        public Color Couleur
-        {
-            get
-            {
-                return this.couleur;
-            }
-
-            set
-            {
-                this.couleur = value;
             }
         }
 
@@ -91,19 +78,17 @@ namespace SAE_1._01
             }
         }
 
-        public void Action()
+        private bool testeCollision(CreateurCarte carte)
         {
-            this.x = 500;
-        }
+            int test = (int)carte.CollisionLayer.Tiles[190].GlobalIdentifier;
+            //si en dehors de la grille
+            if (this.x < 0 || this.y < 0 || this.x > carte.TailleCarte().X || this.Y > carte.TailleCarte().Y)
+                return false;
 
-        public void TryCollision(CreateurCarte carte)
-        {
-            TiledMapTile? tile;
-            if (carte.CollisionLayer.TryGetTile((ushort)X, (ushort)Y, out tile) == false)
-                this.Collision = false;
-            if (!tile.Value.IsBlank)
-                this.Collision = true;
-            this.Collision = false;
+            if (carte.CollisionLayer.Tiles[this.y * (int) carte.CollisionLayer.Width + this.x].GlobalIdentifier == 578)
+                return true;
+
+            return false;
         }
     }
 }

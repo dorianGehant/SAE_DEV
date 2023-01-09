@@ -9,13 +9,14 @@ using MonoGame.Extended.Sprites;
 
 namespace SAE_1._01
 {
-    internal class Entite
+    abstract internal class Entite
     {
         public const float SPEED_BETWEEN_CASE = 0.3f;
         public float TimeNextCase = SPEED_BETWEEN_CASE;
         private string nom;
         private int pointVie;
         private int pointAction;
+        private int pointActionMax;
         private AnimatedSprite texture;
         private Case position;
         public bool jouable;
@@ -33,6 +34,7 @@ namespace SAE_1._01
             this.Position = position;
             this.PointVie = pointVie;
             this.PointAction = pointAction;
+            this.pointActionMax = pointAction;
             this.grille = carte;
             this.gameManager = gm;
             Vector2 pos = this.GetPositionCase(grille.TailleCase);
@@ -133,17 +135,20 @@ namespace SAE_1._01
             }
         }
 
-        public void JouerTour()
+        public int PointActionMax
         {
-            if(jouable == true)
+            get
             {
-                j.PeutAction();
+                return this.pointActionMax;
             }
-            else
+
+            set
             {
-                e.Reflechis();
+                this.pointActionMax = value;
             }
         }
+
+        abstract public void JouerTour();
 
         public void Move(Case c)
         {
@@ -189,6 +194,12 @@ namespace SAE_1._01
         {
             texture.Update(deltaseconds);
         }
+
+        public void ResetPA()
+        {
+            pointAction = pointActionMax;
+        }
+
         public void Possible(Texture2D _bordureCasePossible)
         {
             List<int[]> deplacementPossible = PathFinding.findpath(this.Position, grille.TableauCases , this.PointAction);
@@ -219,7 +230,11 @@ namespace SAE_1._01
         public void MoveChemin(float deltaSeconds)
         {
             if (chemin == null || chemin.Count == 0)
+            {
                 this.jouable = true;
+            }
+                
+            
             TimeNextCase -= deltaSeconds;
             if (TimeNextCase <= 0)
             {

@@ -37,6 +37,7 @@ namespace SAE_1._01
         {
             entiteTour = e;
             entiteTour.Possible(_bordureCasePossible);
+            e.ResetPA();
             e.JouerTour();
         }
         int ChercherEntiteIndex(Entite entite)

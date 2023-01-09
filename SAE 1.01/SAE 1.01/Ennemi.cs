@@ -18,7 +18,7 @@ namespace SAE_1._01
             jouable = false;
         }
 
-        public void Reflechis()
+        public override void JouerTour()
         {
             this.Move(this.grille.TableauCases[(int)this.Position.X+1, 0]);
             this.gameManager.ProchaineEntite();
