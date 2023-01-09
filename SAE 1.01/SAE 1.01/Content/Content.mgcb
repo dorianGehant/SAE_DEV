@@ -102,6 +102,11 @@
 /processorParam:TextureFormat=Color
 /build:mapGeneraleTuiles.png
 
+#begin mapPrincipale.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:mapPrincipale.tmx
+
 #begin New Piskel-1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -132,6 +137,18 @@
 /processorParam:ContentType=MonoGame.Extended MonoGame.Extended.Animations.SpriteFactory.SpriteFactoryFileReader, MonoGame.Extended.Animations
 /build:persoAnimation.sf
 
+#begin Slates [32x32px orthogonal tileset by Ivan Voirol].png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Slates [32x32px orthogonal tileset by Ivan Voirol].png
+
 #begin spritesheet perso.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -148,4 +165,9 @@
 /importer:TiledMapTilesetImporter
 /processor:TiledMapTilesetProcessor
 /build:tuile.tsx
+
+#begin tuilesMap.tsx
+/importer:TiledMapTilesetImporter
+/processor:TiledMapTilesetProcessor
+/build:tuilesMap.tsx
 

@@ -37,6 +37,7 @@ namespace SAE_1._01
             this.gameManager = gm;
             Vector2 pos = this.GetPositionCase(grille.TailleCase);
             this.Move(grille.TableauCases[(int)pos.X, (int)pos.Y]);
+            this.jouable = true;
         }
 
         public void Deplacer(Vector2 position, Carte carte)
@@ -152,6 +153,7 @@ namespace SAE_1._01
                 grille.TableauCases[(int)pos.X, (int)pos.Y].Collision = false;
                 c.Collision = true;
                 this.Position = c;
+                this.PointAction--;
             }
             
         }
@@ -214,12 +216,7 @@ namespace SAE_1._01
                 grille.TableauCases[this.cases_possibles[i][0], this.cases_possibles[i][1]].Texture = _bordureCase;
             }
         }
-
-        public void SetChemin(List<Case> c)
-        {
-            chemin = c;
-        }
-        public bool MoveChemin(float deltaSeconds)
+        public void MoveChemin(float deltaSeconds)
         {
             if (chemin == null || chemin.Count == 0)
             {
@@ -236,7 +233,6 @@ namespace SAE_1._01
                 TimeNextCase = SPEED_BETWEEN_CASE;
 
             }
-            return true;
 
         }
 
@@ -252,7 +248,8 @@ namespace SAE_1._01
                 chemin.Add(this.grille.TableauCases[x, y]);
                 Console.WriteLine(x+""+y);
             }
-            SetChemin(chemin);
+            this.chemin = chemin;
+            this.jouable = false;
             Console.WriteLine("Coordonne depart" + chemin[0].X + " " + chemin[0].Y);
             Console.WriteLine("Coordonne arrive" + chemin[chemin.Count-1].X + " " + chemin[chemin.Count-1].Y);
 

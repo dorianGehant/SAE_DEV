@@ -39,7 +39,7 @@ namespace SAE_1._01
             graphiques.BlendState = BlendState.AlphaBlend;
             manageurGraphiques = game1._graphics;
 
-            //lad de la carte
+            //load de la carte
             carte = Content.Load<TiledMap>(nomMap);
             //load des collissions
             CollisionLayer = carte.GetLayer<TiledMapTileLayer>("collisionable");
@@ -72,6 +72,14 @@ namespace SAE_1._01
             manageurGraphiques.PreferredBackBufferWidth = (int)size.X;
             manageurGraphiques.PreferredBackBufferHeight = (int)size.Y;
             manageurGraphiques.ApplyChanges();
+        }
+
+        public void RenseignerGame(Game1 game1)
+        {
+            Content = game1.Content;
+            graphiques = game1.GraphicsDevice;
+            graphiques.BlendState = BlendState.AlphaBlend;
+            manageurGraphiques = game1._graphics;
         }
 
       
