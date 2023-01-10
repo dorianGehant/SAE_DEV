@@ -93,7 +93,7 @@ namespace SAE_1._01
             }
             return temp;
         }
-        static List<int[]> NoeudAdjacentDeplacableAvecPoint(int x, int y, Case[,] map, int cout, int maxPoint)
+        static List<int[]> NoeudAdjacentDeplacableAvecPoint(int x, int y, Case[,] map, int cout, int maxPoint, bool ignoreCollision)
         {
             List<int[]> noeudProposer = new List<int[]> {
                 new int[] {x,y-1, cout},
@@ -103,9 +103,16 @@ namespace SAE_1._01
             List<int[]> deplacable = new List<int[]> { };
             for (int i = 0; i < noeudProposer.Count; i++)
             {
-                if (noeudProposer[i][0] >= 0 && noeudProposer[i][0] < map.GetLength(1) && noeudProposer[i][1] >= 0 && noeudProposer[i][1] < map.GetLength(0) && map[noeudProposer[i][0], noeudProposer[i][1]].Collision == false && noeudProposer[i][2] <= maxPoint)
+                if (noeudProposer[i][0] >= 0 && noeudProposer[i][0] < map.GetLength(1) && noeudProposer[i][1] >= 0 && noeudProposer[i][1] < map.GetLength(0) && noeudProposer[i][2] <= maxPoint)
                 {
-                    deplacable.Add(noeudProposer[i]);
+                    if (ignoreCollision)
+                    {
+                        deplacable.Add(noeudProposer[i]);
+                    }
+                    else if(map[noeudProposer[i][0], noeudProposer[i][1]].Collision == false)
+                    {
+                        deplacable.Add(noeudProposer[i]);
+                    }
                 }
             }
             return deplacable;
@@ -209,7 +216,7 @@ namespace SAE_1._01
             chemin.Reverse();
             return chemin;
         }
-        public static List<int[]> findpath(Case depart, Case[,] carte, int maxPoint)
+        public static List<int[]> findpath(Case depart, Case[,] carte, int maxPoint, bool ignoreCollision)
         {
             int cout = 0;
 
@@ -221,7 +228,7 @@ namespace SAE_1._01
             while (parcour.Count != 0)
             {
                 cout = parcour[0][2] + 1;
-                foreach (int[] elt in NoeudAdjacentDeplacableAvecPoint(parcour[0][0], parcour[0][1], carte, cout, maxPoint))
+                foreach (int[] elt in NoeudAdjacentDeplacableAvecPoint(parcour[0][0], parcour[0][1], carte, cout, maxPoint, ignoreCollision))
                 {
                     //ont part du principe que l'élément adjacent n'est pas déjà dans le résultat et le parcour mais ont va le vérifier
                     bool estPas = true;

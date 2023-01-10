@@ -16,9 +16,17 @@ namespace SAE_1._01
     {
         
         const int LONGUEUR_CASE = 30, HAUTEUR_CASE = 30,TAILLE_CASE = 32;
+        const int HAUTEUR_FENETRE = 960;
+        const int LARGEUR_FENETRE = 960;
+
         public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private MouseState _etatSouris;
+        int xSouris;
+        int ySouris;
+        int xSourisPrecedent;
+        int ySourisPrecedent;
+
         private KeyboardState _etatClavier;
 
         private Case[,] _tableauCases;
@@ -30,19 +38,22 @@ namespace SAE_1._01
 
         private CreateurCarte _map01;
         private Texture2D _bordureCase;
-        public Texture2D _bordureCasePossible;
+        private Texture2D _bordureCasePossible;
+        private Texture2D _bordureCaseSelectionne;
+        private Texture2D _bordureSortPossible;
 
         private Joueur _joueur1;
         private Texture2D _texturePersonnage;
         private Texture2D _textureSelectionne;
-        Case selectionne;
+        Texture2D ancienneTexture;
         Carte cases;
+        private List<Sort> sortsBaseJoueurs = new List<Sort>();
         Joueur j1;
         Joueur j2;
         Ennemi ennemi;
         GameManager gameManager;
         SpriteFont _font;
-        bool KeyPressedE = false;
+        bool KeyPressedSpace = false; 
         bool mouseClick = false;
         public Game1()
         {
@@ -64,6 +75,8 @@ namespace SAE_1._01
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
             _bordureCase = Content.Load<Texture2D>("contour_case");
             _bordureCasePossible = Content.Load<Texture2D>("case_proposer");
+            _bordureSortPossible = Content.Load<Texture2D>("bordureSortLancable");
+            _bordureCaseSelectionne = Content.Load<Texture2D>("bordureCaseSelectionne");
             _textureSelectionne = Content.Load<Texture2D>("New Piskel-1");
             _texturePersonnage = Content.Load<Texture2D>("perso");
             _font = Content.Load<SpriteFont>("Font");
@@ -71,19 +84,21 @@ namespace SAE_1._01
 
             //creation des objets utiles
             _map01 = new CreateurCarte("mapPrincipale", this);
-            selectionne = new Case(-100, -100, _textureSelectionne, _map01);
             cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
             
             gameManager = new GameManager(_bordureCasePossible);
-            
-            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5,5], 1, 7, cases, gameManager);
-            j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 7, cases, gameManager);
+
+            sortsBaseJoueurs.Add(new SortMonocible("attaqueCAC", -6, 1, 1, effetSort.MODIF_PV));
+            sortsBaseJoueurs.Add(new SortMonocible("degatDistance", -4, 4, 2, effetSort.MODIF_PV));
+            sortsBaseJoueurs.Add(new SortMonocible("soinDistance", 2, 4, 2, effetSort.MODIF_PV));
+            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
+            j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, cases, gameManager);
+            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, 2, 2, cases, sortsBaseJoueurs, gameManager);
             gameManager.AjouterCombattant(ennemi);
-            
 
+            ancienneTexture = _bordureCase;
 
             //valeur des tailles 
             _longueurCase = (int)_map01.TailleCase().X;
@@ -107,51 +122,103 @@ namespace SAE_1._01
             var simulationKey = Inputs.Use<IKeyboardSimulation>();
             _etatClavier = Keyboard.GetState();
             _etatSouris = Mouse.GetState();
-            
+
 
             //positions souris
-            int x = (_etatSouris.X - Window.Position.X) / TAILLE_CASE;
-            int y = (_etatSouris.Y + - Window.Position.Y) / TAILLE_CASE;
+            if (xSouris >= 0 && xSouris < LARGEUR_FENETRE && ySouris >= 0 && ySouris < HAUTEUR_FENETRE)
+            {
+                xSourisPrecedent = xSouris;
+                ySourisPrecedent = ySouris;
+
+            }
+            xSouris = (_etatSouris.X - Window.Position.X) / TAILLE_CASE;
+            ySouris = (_etatSouris.Y + - Window.Position.Y) / TAILLE_CASE;
 
             Entite jouable = gameManager.GetEntiteTour();
             
             //verification si pas d'attente
-            if (jouable.jouable)
+            if (jouable.Jouable)
             {
                 jouable.Possible(_bordureCasePossible);
 
-                //on met le carre bleu sur la case ou il y a la souris
-                selectionne.X = x;
-                selectionne.Y = y ;
-
                 //on verifie si la souris se trouve bien sur une case
-                if (x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
-                    {
+
+
                     //verification clique
-                    if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x, y]))
+                    if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[xSouris, ySouris]))
                     {
+                        ancienneTexture = _bordureCase;
                         //On bouge le joueur ou on clique
 
                         jouable.enleverPossible(_bordureCase);
-                        Console.WriteLine("cases souris " + y + "   " + x);
+                        Console.WriteLine("cases souris " + ySouris + "   " + xSouris);
                         Console.WriteLine("case jouable " + jouable.Position.Y + " " + jouable.Position.X);
-                        jouable.Chemin_A_Star(cases.TableauCases[jouable.Position.Y, jouable.Position.X], cases.TableauCases[y, x]);
-                        Console.WriteLine(jouable.grille.TableauCases[jouable.Position.X, jouable.Position.Y].Collision);
-
+                        jouable.PlayAnim("Walk");
+                        jouable.Chemin_A_Star(cases.TableauCases[jouable.Position.Y, jouable.Position.X], cases.TableauCases[ySouris, xSouris]);
+                        Console.WriteLine(jouable.Grille.TableauCases[jouable.Position.X, jouable.Position.Y].Collision);
                     }
-                }
-                if (simulationKey.IsKeyDown(InputKeys.E) && KeyPressedE == false)
+
+                if (simulationKey.IsKeyDown(InputKeys.Space) && KeyPressedSpace == false)
                 {
                     jouable.enleverPossible(_bordureCase);
                     gameManager.ProchaineEntite();
+                }
 
+                if (simulationKey.IsKeyDown(InputKeys.A) && jouable.PointAction >= jouable.Sorts[0].Cout)
+                {
+                    jouable.SortEnLancement = jouable.Sorts[0];
+                    jouable.Jouable = false;
+                    jouable.PlayAnim("attaque");
+                }
+
+                if (simulationKey.IsKeyDown(InputKeys.Z) && jouable.PointAction >= jouable.Sorts[1].Cout)
+                {
+                    jouable.SortEnLancement = jouable.Sorts[1];
+                    jouable.Jouable = false;
+                    jouable.PlayAnim("Magic");
+                }
+
+                if (simulationKey.IsKeyDown(InputKeys.E) && jouable.PointAction >= jouable.Sorts[2].Cout)
+                {
+                    jouable.SortEnLancement = jouable.Sorts[2];
+                    jouable.Jouable = false;
+                    jouable.PlayAnim("Magic");
                 }
             }
             else
             {
-                jouable.MoveChemin(deltaSeconds);
+                if (jouable.SortEnLancement != null)
+                {
+                    jouable.enleverPossible(_bordureCase);
+                    jouable.Possible(_bordureSortPossible, jouable.SortEnLancement);
+
+                    if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[xSouris, ySouris]))
+                    {
+                        jouable.SortEnLancement.Lancer(cases.TableauCases[xSouris, ySouris], jouable, gameManager.EntitesCombat);
+                        cases.resetTextureCases(_bordureCase);
+                        jouable.PlayAnim("Idle");
+                    }
+
+                    if (simulationKey.IsKeyDown(InputKeys.Escape))
+                    {
+                        jouable.SortEnLancement = null;
+                        cases.resetTextureCases(_bordureCase);
+                    }
+                }
+                else
+                {
+                    jouable.MoveChemin(deltaSeconds);
+                }
             }
-            KeyPressedE = simulationKey.IsKeyDown(InputKeys.E);
+
+            if (xSouris >= 0 && xSouris < LONGUEUR_CASE && ySouris >= 0 && ySouris < HAUTEUR_CASE && xSourisPrecedent >= 0 && xSourisPrecedent < LONGUEUR_CASE && ySourisPrecedent >= 0 && ySourisPrecedent < HAUTEUR_CASE)
+            {
+                cases.TableauCases[xSourisPrecedent, ySourisPrecedent].Texture = ancienneTexture;
+                ancienneTexture = cases.TableauCases[xSouris, ySouris].Texture;
+                cases.TableauCases[xSouris, ySouris].Texture = _bordureCaseSelectionne;
+            }
+
+            KeyPressedSpace = simulationKey.IsKeyDown(InputKeys.Space);
             mouseClick = simulation.IsMouseDown(InputMouseButtons.Left);
             //mise a jour / update
             j1.UpdateAnim(deltaSeconds);
@@ -169,10 +236,10 @@ namespace SAE_1._01
             _spriteBatch.Begin();
             _map01.Dessiner();
             cases.AfficherMap(_spriteBatch);
-            _spriteBatch.Draw(selectionne.Texture, new Vector2(selectionne.X * TAILLE_CASE, selectionne.Y * TAILLE_CASE), Color.White);
-            j1.Afficher(_spriteBatch);
-            j2.Afficher(_spriteBatch);
-            ennemi.Afficher(_spriteBatch);
+            foreach(Entite entite in gameManager.EntitesCombat)
+            {
+                entite.Afficher(_spriteBatch);
+            }
             _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
             _spriteBatch.End();
             

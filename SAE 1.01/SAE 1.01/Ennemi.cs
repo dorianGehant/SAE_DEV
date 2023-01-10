@@ -11,17 +11,21 @@ namespace SAE_1._01
 {
     internal class Ennemi : Entite
 {
-        public Ennemi(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction,Carte grille,GameManager gm)
-            : base(spritesheet, nom, position, pointVie, pointAction,grille,gm)
+        public Ennemi(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int defense, int attaque, Carte grille, List<Sort> sorts, GameManager gm)
+            : base(spritesheet, nom, position, pointVie, pointAction, defense, attaque, grille, sorts, gm)
         {
-            SetEnnemi(this);
-            jouable = false;
+            Jouable = false;
         }
 
         public override void JouerTour()
         {
-            this.Move(this.grille.TableauCases[(int)this.Position.X+1, 0]);
-            this.gameManager.ProchaineEntite();
+            this.Move(this.Grille.TableauCases[(int)this.Position.X+1, 0]);
+            this.GameManager.ProchaineEntite();
         }
-}
+
+        public override void EstTuePar(Entite tueur, List<Entite> listeEntitesVivantes)
+        {
+            listeEntitesVivantes.Remove(this);
+        }
+    }
 }

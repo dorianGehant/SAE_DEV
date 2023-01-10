@@ -101,5 +101,14 @@ namespace SAE_1._01
                 }
             }
         }
+
+        public void resetTextureCases(Texture2D textureBase)
+        {
+            foreach(Case c in this.tableauCases)
+            {
+                c.Texture = textureBase;
+            }
+        }
+
     }
 }

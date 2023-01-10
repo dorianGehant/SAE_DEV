@@ -11,23 +11,22 @@ namespace SAE_1._01
 {
     internal class Joueur : Entite
     {
-        private List<Sort> sorts;
 
-        public Joueur(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction,Carte grille,GameManager gm)
-            : base(spritesheet, nom, position, pointVie, pointAction,grille,gm)
+        public Joueur(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int defense, int attaque, Carte grille, List<Sort> sorts, GameManager gm)
+            : base(spritesheet, nom, position, pointVie, pointAction, defense, attaque, grille, sorts, gm)
         {
-            SetJoueur(this);
-            
             this.PlayAnim("Idle");
-            jouable = true;
-            //this.sorts = new List<Sort>(sorts);
+            Jouable = true;
         }
-
-        
 
         public override void JouerTour()
         {
 
+        }
+
+        public override void EstTuePar(Entite tueur, List<Entite> listeEntitesVivantes)
+        {
+            listeEntitesVivantes.Remove(this);
         }
     }
 }

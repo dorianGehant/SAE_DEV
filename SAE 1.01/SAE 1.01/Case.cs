@@ -78,6 +78,13 @@ namespace SAE_1._01
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Case caseCompare &&
+               this.X == caseCompare.X &&
+               this.Y == caseCompare.Y;
+        }
+
         private bool testeCollision(CreateurCarte carte)
         {
             int test = (int)carte.CollisionLayer.Tiles[190].GlobalIdentifier;
