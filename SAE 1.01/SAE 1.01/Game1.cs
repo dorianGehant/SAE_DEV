@@ -62,6 +62,7 @@ namespace SAE_1._01
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             //On load les differents elements
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
+            SpriteSheet spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
             _bordureCase = Content.Load<Texture2D>("contour_case");
             _bordureCasePossible = Content.Load<Texture2D>("case_proposer");
             _textureSelectionne = Content.Load<Texture2D>("New Piskel-1");
@@ -80,7 +81,7 @@ namespace SAE_1._01
             j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 7, cases, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5], 1, 3, cases, gameManager);
+            ennemi = new Ennemi(spriteSheetEnnemi, "e1", cases.TableauCases[5, 5], 1, 3, cases, gameManager);
             gameManager.AjouterCombattant(ennemi);
 
 
@@ -154,6 +155,7 @@ namespace SAE_1._01
             //mise a jour / update
             j1.UpdateAnim(deltaSeconds);
             j2.UpdateAnim(deltaSeconds);
+            ennemi.UpdateAnim(deltaSeconds);
             _map01.MiseAJour(gameTime);
             base.Update(gameTime);
 

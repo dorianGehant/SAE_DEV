@@ -15,6 +15,7 @@ namespace SAE_1._01
             : base(spritesheet, nom, position, pointVie, pointAction,grille,gm)
         {
             SetEnnemi(this);
+            this.PlayAnim("Idle");
             jouable = false;
         }
 
@@ -140,6 +141,7 @@ namespace SAE_1._01
 
         public override void DeplacementFini()
         {
+            this.PlayAnim("Idle");
             if (CheckIfPlayerRange())
             {
                 //attack
