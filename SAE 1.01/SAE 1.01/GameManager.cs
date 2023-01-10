@@ -36,7 +36,6 @@ namespace SAE_1._01
         void SetTour(Entite e)
         {
             entiteTour = e;
-            entiteTour.Possible(_bordureCasePossible);
             e.ResetPA();
             Console.WriteLine(e.jouable);
             Console.WriteLine(e.PointAction);

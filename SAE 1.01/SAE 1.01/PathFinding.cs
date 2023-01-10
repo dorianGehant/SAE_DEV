@@ -73,7 +73,7 @@ namespace SAE_1._01
             }
         }
 
-        static List<Noeud> NoeudAdjacentDeplacable(int x, int y, Case[,] map)
+        public static List<Noeud> NoeudAdjacentDeplacable(int x, int y, Case[,] map)
         {
             List<Noeud> noeudProposer = new List<Noeud>() {
             new Noeud (x, y - 1 ),

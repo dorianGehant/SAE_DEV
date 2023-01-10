@@ -78,6 +78,11 @@ namespace SAE_1._01
             }
         }
 
+        public override string ToString()
+        {
+            return "position case : (" + x + "," + y + ")";
+        }
+
         private bool testeCollision(CreateurCarte carte)
         {
             int test = (int)carte.CollisionLayer.Tiles[190].GlobalIdentifier;

@@ -188,12 +188,13 @@ namespace SAE_1._01
             pointAction = pointActionMax;
         }
 
-        public void Possible(Texture2D _bordureCasePossible)
+        public void Possible(Texture2D _bordureCasePossible, bool afficher = true)
         {
             List<int[]> deplacementPossible = PathFinding.findpath(this.Position, grille.TableauCases , this.PointAction);
             for (int i = 0; i < deplacementPossible.Count-1; i++)
             {
-                grille.TableauCases[deplacementPossible[i][0],deplacementPossible[i][1]].Texture = _bordureCasePossible;
+                if(afficher)
+                    grille.TableauCases[deplacementPossible[i][0],deplacementPossible[i][1]].Texture = _bordureCasePossible;
             }
             this.cases_possibles = deplacementPossible;
         }
@@ -221,17 +222,23 @@ namespace SAE_1._01
             {
                 this.jouable = true;
             }
-               
             TimeNextCase -= deltaSeconds;
             if (TimeNextCase <= 0)
             {
+                this.PlayAnim("Walk");
                 this.Move(chemin[0]);
                 chemin.RemoveAt(0);
                 TimeNextCase = SPEED_BETWEEN_CASE;
+                if(chemin.Count == 0)
+                {
+                    DeplacementFini();
+                }
 
             }
 
         }
+
+        abstract public void DeplacementFini();
 
         public void Chemin_A_Star(Case depart,Case arrive)
         {
@@ -258,10 +265,7 @@ namespace SAE_1._01
 
         }
 
-        public void ResetPA()
-        {
-            pointAction = pointActionMax;
-        }
+        
 
     }
 }

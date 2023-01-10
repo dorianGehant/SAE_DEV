@@ -29,5 +29,10 @@ namespace SAE_1._01
         {
 
         }
+
+        public override void DeplacementFini()
+        {
+            this.PlayAnim("Idle");
+        }
     }
 }

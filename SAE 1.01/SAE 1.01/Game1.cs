@@ -80,7 +80,7 @@ namespace SAE_1._01
             j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 7, cases, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5], 1, 5, cases, gameManager);
+            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5], 1, 3, cases, gameManager);
             gameManager.AjouterCombattant(ennemi);
 
 
