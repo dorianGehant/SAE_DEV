@@ -32,6 +32,19 @@ namespace SAE_1._01
             }
         }
 
+        public TiledMap Carte
+        {
+            get
+            {
+                return this.carte;
+            }
+
+            set
+            {
+                this.carte = value;
+            }
+        }
+
         public CreateurCarte(string nomMap, Game1 game1)
         {
             Content = game1.Content;
@@ -40,15 +53,15 @@ namespace SAE_1._01
             manageurGraphiques = game1._graphics;
 
             //load de la carte
-            carte = Content.Load<TiledMap>(nomMap);
+            Carte = Content.Load<TiledMap>(nomMap);
             //load des collissions
-            CollisionLayer = carte.GetLayer<TiledMapTileLayer>("collisionable");
-            carteAfficheur = new TiledMapRenderer(graphiques, carte);
+            CollisionLayer = Carte.GetLayer<TiledMapTileLayer>("Collision");
+            carteAfficheur = new TiledMapRenderer(graphiques, Carte);
         }
 
         public void Dessiner()
         {
-            carteAfficheur.Draw();
+            carteAfficheur. Draw();
         }
 
         public void MiseAJour(GameTime gt)
@@ -58,12 +71,12 @@ namespace SAE_1._01
 
         public Vector2 TailleCarte()
         {
-            return new Vector2(carte.WidthInPixels, carte.HeightInPixels);
+            return new Vector2(Carte.WidthInPixels, Carte.HeightInPixels);
         }
 
         public Vector2 TailleCase()
         {
-            return new Vector2(carte.TileWidth, carte.TileHeight);
+            return new Vector2(Carte.TileWidth, Carte.TileHeight);
         }
 
         public void AdapterFenetreAMap()

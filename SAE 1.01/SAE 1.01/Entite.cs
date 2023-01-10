@@ -182,6 +182,12 @@ namespace SAE_1._01
         {
             texture.Update(deltaseconds);
         }
+
+        public void ResetPA()
+        {
+            pointAction = pointActionMax;
+        }
+
         public void Possible(Texture2D _bordureCasePossible)
         {
             List<int[]> deplacementPossible = PathFinding.findpath(this.Position, grille.TableauCases , this.PointAction);

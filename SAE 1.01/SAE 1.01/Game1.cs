@@ -71,9 +71,9 @@ namespace SAE_1._01
 
             //creation des objets utiles
             _map01 = new CreateurCarte("mapPrincipale", this);
-            selectionne = new Case(-100, -100, _textureSelectionne);
-            cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase, _map01);
-
+            selectionne = new Case(-100, -100, _textureSelectionne, _map01);
+            cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
+            
             gameManager = new GameManager(_bordureCasePossible);
 
             j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5, 5], 1, 7, cases, gameManager);
@@ -114,42 +114,40 @@ namespace SAE_1._01
             int y = (_etatSouris.Y + -Window.Position.Y) / TAILLE_CASE;
 
             Entite jouable = gameManager.GetEntiteTour();
-
-            //on verifie si la souris se trouve bien sur une case
-            if (x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
+            
+            //verification si pas d'attente
+            if (jouable.jouable)
             {
-                selectionne.X = x;
-                selectionne.Y = y;
-                if (jouable.jouable)
-                {
-                    //on met le carre bleu sur la case ou il y a la souris
+                jouable.Possible(_bordureCasePossible);
 
-                    jouable.Possible(_bordureCasePossible);
+                //on met le carre bleu sur la case ou il y a la souris
+                selectionne.X = x;
+                selectionne.Y = y ;
+
+                //on verifie si la souris se trouve bien sur une case
+                if (x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
+                    {
                     //verification clique
                     //Console.WriteLine(jouable.Nom);
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x, y]))
                     {
                         //On bouge le joueur ou on clique
 
-                        //jouable.Move(cases.TableauCases[x,y]);
                         jouable.enleverPossible(_bordureCase);
                         jouable.Chemin_A_Star(cases.TableauCases[jouable.Position.Y, jouable.Position.X], cases.TableauCases[y, x]);
 
                     }
                 }
-                else
+                if (simulationKey.IsKeyDown(InputKeys.E) && KeyPressedE == false)
                 {
-                    jouable.MoveChemin(deltaSeconds);
-                    
+                    jouable.enleverPossible(_bordureCase);
+                    gameManager.ProchaineEntite();
+
                 }
             }
-                
-
-
-            if (simulationKey.IsKeyDown(InputKeys.E) && KeyPressedE == false)
+            else
             {
-                jouable.enleverPossible(_bordureCase);
-                gameManager.ProchaineEntite();
+                jouable.MoveChemin(deltaSeconds);
             }
             KeyPressedE = simulationKey.IsKeyDown(InputKeys.E);
             mouseClick = simulation.IsMouseDown(InputMouseButtons.Left);
