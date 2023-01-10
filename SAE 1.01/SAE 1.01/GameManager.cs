@@ -51,6 +51,8 @@ namespace SAE_1._01
         {
             entiteTour = e;
             e.ResetPA();
+            Console.WriteLine(e.jouable);
+            Console.WriteLine(e.PointAction);
             e.JouerTour();
         }
         int ChercherEntiteIndex(Entite entite)

@@ -64,7 +64,7 @@ namespace SAE_1._01
 
         protected override void Initialize()
         {
-            
+
             base.Initialize();
         }
 
@@ -224,9 +224,14 @@ namespace SAE_1._01
             j1.UpdateAnim(deltaSeconds);
             j2.UpdateAnim(deltaSeconds);
             _map01.MiseAJour(gameTime);
-
             base.Update(gameTime);
+
         }
+
+
+
+
+
 
         protected override void Draw(GameTime gameTime)
         {
@@ -242,11 +247,11 @@ namespace SAE_1._01
             }
             _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
             _spriteBatch.End();
-            
+
             base.Draw(gameTime);
         }
 
 
-
     }
+    
 }

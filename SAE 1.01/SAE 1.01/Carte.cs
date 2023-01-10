@@ -50,7 +50,7 @@ namespace SAE_1._01
             }
         }
 
-        internal Case[,] TableauCases
+        public Case[,] TableauCases
         {
             get
             {

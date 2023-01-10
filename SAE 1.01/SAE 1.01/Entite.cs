@@ -273,6 +273,7 @@ namespace SAE_1._01
         }
 
         abstract public void JouerTour();
+      
 
         public void Move(Case c)
         {
@@ -314,7 +315,7 @@ namespace SAE_1._01
             pointAction = pointActionMax;
         }
 
-        public void Possible(Texture2D _bordureCasePossible)
+        public void Possible(Texture2D _bordureCasePossible, bool afficher = true)
         {
             List<int[]> deplacementPossible = PathFinding.findpath(this.Position, Grille.TableauCases , this.PointAction, false);
             for (int i = 0; i < deplacementPossible.Count-1; i++)
@@ -359,18 +360,22 @@ namespace SAE_1._01
                 this.Jouable = true;
                 PlayAnim("Idle");
             }
-                
-            
             TimeNextCase -= deltaSeconds;
             if (TimeNextCase <= 0)
             {
                 this.Move(Chemin[0]);
                 Chemin.RemoveAt(0);
                 TimeNextCase = SPEED_BETWEEN_CASE;
+                if(chemin.Count == 0)
+                {
+                    DeplacementFini();
+                }
 
             }
 
         }
+
+        abstract public void DeplacementFini();
 
         public void Chemin_A_Star(Case depart,Case arrive)
         {
