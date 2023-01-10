@@ -9,13 +9,14 @@ using MonoGame.Extended.Sprites;
 
 namespace SAE_1._01
 {
-    internal class Entite
+    abstract internal class Entite
     {
         public const float SPEED_BETWEEN_CASE = 0.3f;
         public float TimeNextCase = SPEED_BETWEEN_CASE;
         private string nom;
         private int pointVie;
         private int pointAction;
+        int pointActionMax;
         private AnimatedSprite texture;
         private Case position;
         public bool jouable;
@@ -23,7 +24,7 @@ namespace SAE_1._01
         public GameManager gameManager;
         Joueur j;
         Ennemi e;
-        List<Case> chemin;
+        public List<Case> chemin;
         List<int[]> cases_possibles;
 
         protected Entite(SpriteSheet spriteSheet, string nom, Case position, int pointVie, int pointAction,Carte carte,GameManager gm)
@@ -33,6 +34,7 @@ namespace SAE_1._01
             this.Position = position;
             this.PointVie = pointVie;
             this.PointAction = pointAction;
+            this.pointActionMax = pointAction;
             this.grille = carte;
             this.gameManager = gm;
             Vector2 pos = this.GetPositionCase(grille.TailleCase);
@@ -133,17 +135,8 @@ namespace SAE_1._01
             }
         }
 
-        public void JouerTour()
-        {
-            if(jouable == true)
-            {
-                j.PeutAction();
-            }
-            else
-            {
-                e.Reflechis();
-            }
-        }
+        abstract public void JouerTour();
+      
 
         public void Move(Case c)
         {
@@ -220,11 +213,9 @@ namespace SAE_1._01
         {
             if (chemin == null || chemin.Count == 0)
             {
-                this.PlayAnim("Idle");
-                return false;
+                this.jouable = true;
             }
-                
-            this.PlayAnim("Walk");
+               
             TimeNextCase -= deltaSeconds;
             if (TimeNextCase <= 0)
             {
@@ -238,21 +229,32 @@ namespace SAE_1._01
 
         public void Chemin_A_Star(Case depart,Case arrive)
         {
-           
+            List<Case> chemin = GetChemin_A_Star(depart,arrive);
+            this.chemin = chemin;
+            this.jouable = false;
+            
+
+        }
+        public List<Case> GetChemin_A_Star(Case depart, Case arrive)
+        {
+            Console.WriteLine("Coordonne depart" + depart );
+            Console.WriteLine("Coordonne arrive" + arrive );
             List<int[]> res = PathFinding.A_star(depart, arrive, this.grille.TableauCases);
-            List<Case> chemin = new List<Case>();
+            List<Case> c = new List<Case>();
             for (int i = 0; i < res.Count; i++)
             {
                 int x = res[i][1];
                 int y = res[i][0];
-                chemin.Add(this.grille.TableauCases[x, y]);
-                Console.WriteLine(x+""+y);
+                c.Add(this.grille.TableauCases[x, y]);
             }
-            this.chemin = chemin;
-            this.jouable = false;
-            Console.WriteLine("Coordonne depart" + chemin[0].X + " " + chemin[0].Y);
-            Console.WriteLine("Coordonne arrive" + chemin[chemin.Count-1].X + " " + chemin[chemin.Count-1].Y);
+            return c;
+            
 
+        }
+
+        public void ResetPA()
+        {
+            pointAction = pointActionMax;
         }
 
     }

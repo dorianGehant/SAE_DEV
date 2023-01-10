@@ -14,8 +14,8 @@ namespace SAE_1._01
 {
     public class Game1 : Game
     {
-        
-        const int LONGUEUR_CASE = 30, HAUTEUR_CASE = 30,TAILLE_CASE = 32;
+
+        const int LONGUEUR_CASE = 30, HAUTEUR_CASE = 30, TAILLE_CASE = 32;
         public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private MouseState _etatSouris;
@@ -53,7 +53,7 @@ namespace SAE_1._01
 
         protected override void Initialize()
         {
-            
+
             base.Initialize();
         }
 
@@ -72,17 +72,17 @@ namespace SAE_1._01
             //creation des objets utiles
             _map01 = new CreateurCarte("mapPrincipale", this);
             selectionne = new Case(-100, -100, _textureSelectionne);
-            cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
-            
+            cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase, _map01);
+
             gameManager = new GameManager(_bordureCasePossible);
-            
-            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5,5], 1, 7, cases, gameManager);
+
+            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5, 5], 1, 7, cases, gameManager);
             j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 1, 7, cases, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, cases, gameManager);
+            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5], 1, 5, cases, gameManager);
             gameManager.AjouterCombattant(ennemi);
-            
+
 
 
             //valeur des tailles 
@@ -107,45 +107,44 @@ namespace SAE_1._01
             var simulationKey = Inputs.Use<IKeyboardSimulation>();
             _etatClavier = Keyboard.GetState();
             _etatSouris = Mouse.GetState();
-            
+
 
             //positions souris
             int x = (_etatSouris.X - Window.Position.X) / TAILLE_CASE;
-            int y = (_etatSouris.Y + - Window.Position.Y) / TAILLE_CASE;
+            int y = (_etatSouris.Y + -Window.Position.Y) / TAILLE_CASE;
 
             Entite jouable = gameManager.GetEntiteTour();
 
             //on verifie si la souris se trouve bien sur une case
             if (x >= 0 && x < LONGUEUR_CASE && y >= 0 && y < HAUTEUR_CASE)
             {
-                //on met le carre bleu sur la case ou il y a la souris
                 selectionne.X = x;
-                selectionne.Y = y ;
-
-                //verification clique
-                Entite jouable = gameManager.GetEntiteTour();
-                Console.WriteLine(jouable.Nom);
-                if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x,y]))
+                selectionne.Y = y;
+                if (jouable.jouable)
                 {
-                    //On bouge le joueur ou on clique
+                    //on met le carre bleu sur la case ou il y a la souris
+
+                    jouable.Possible(_bordureCasePossible);
+                    //verification clique
+                    //Console.WriteLine(jouable.Nom);
+                    if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x, y]))
+                    {
+                        //On bouge le joueur ou on clique
 
                         //jouable.Move(cases.TableauCases[x,y]);
                         jouable.enleverPossible(_bordureCase);
-                        Console.WriteLine("cases souris " + y + "   " + x);
-                        Console.WriteLine("case jouable " + jouable.Position.Y + " " + jouable.Position.X);
                         jouable.Chemin_A_Star(cases.TableauCases[jouable.Position.Y, jouable.Position.X], cases.TableauCases[y, x]);
-                        Console.WriteLine(jouable.grille.TableauCases[jouable.Position.X, jouable.Position.Y].Collision);
 
                     }
                 }
                 else
                 {
                     jouable.MoveChemin(deltaSeconds);
-                    if (jouable.jouable)
-                        jouable.Possible(_bordureCasePossible);
+                    
                 }
-
             }
+                
+
 
             if (simulationKey.IsKeyDown(InputKeys.E) && KeyPressedE == false)
             {
@@ -158,9 +157,14 @@ namespace SAE_1._01
             j1.UpdateAnim(deltaSeconds);
             j2.UpdateAnim(deltaSeconds);
             _map01.MiseAJour(gameTime);
-
             base.Update(gameTime);
+
         }
+
+
+
+
+
 
         protected override void Draw(GameTime gameTime)
         {
@@ -176,11 +180,11 @@ namespace SAE_1._01
             ennemi.Afficher(_spriteBatch);
             _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
             _spriteBatch.End();
-            
+
             base.Draw(gameTime);
         }
 
 
-
     }
+    
 }

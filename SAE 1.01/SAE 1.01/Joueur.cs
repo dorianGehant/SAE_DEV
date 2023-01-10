@@ -25,7 +25,7 @@ namespace SAE_1._01
 
         
 
-        public void PeutAction()
+        public override void JouerTour()
         {
 
         }

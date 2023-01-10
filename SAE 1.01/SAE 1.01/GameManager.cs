@@ -11,7 +11,7 @@ namespace SAE_1._01
 {
         List<Entite> entitesCombat = new List<Entite>();
         Entite entiteTour;
-        Texture2D _bordureCasePossible;
+        public Texture2D _bordureCasePossible;
         public GameManager(Texture2D _bordureCasePossible)
         {
             this._bordureCasePossible = _bordureCasePossible;
@@ -37,6 +37,9 @@ namespace SAE_1._01
         {
             entiteTour = e;
             entiteTour.Possible(_bordureCasePossible);
+            e.ResetPA();
+            Console.WriteLine(e.jouable);
+            Console.WriteLine(e.PointAction);
             e.JouerTour();
         }
         int ChercherEntiteIndex(Entite entite)
@@ -64,6 +67,11 @@ namespace SAE_1._01
         public Entite GetEntiteTour()
         {
             return entiteTour;
+        }
+
+        public List<Entite> GetListEntite()
+        {
+            return entitesCombat;
         }
 }
 }

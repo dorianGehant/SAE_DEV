@@ -96,6 +96,11 @@ namespace SAE_1._01
             this.x = 500;
         }
 
+        public override string ToString()
+        {
+            return "[" + X + "," + Y + "]";
+        }
+
         public void TryCollision(CreateurCarte carte)
         {
             TiledMapTile? tile;
