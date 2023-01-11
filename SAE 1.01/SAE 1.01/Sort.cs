@@ -7,28 +7,67 @@ using System.Threading.Tasks;
 
 namespace SAE_1._01
 {
-    enum typeSort
+
+    enum effetSort
     {
-        SORT_DEGAT,
-        SORT_CHANGEMENT_STAT,
+        MODIF_PV,
+        MODIF_DEFENSE,
+        MODIF_ATTAQUE,
+        MODIF_PA
     }
 
-    internal class Sort
+    abstract internal class Sort
     {
-        private typeSort effet;
         private string nom;
         private int valeurEffet;
+        private int rangeLancement;
+        private int cout;
+        effetSort effet;
 
-        public Sort(typeSort effet, string nom, int valeurEffet)
+        public Sort(string nom, int valeurEffet, int rangeLancement, int cout, effetSort effet)
         {
-            this.Effet = effet;
             this.Nom = nom;
             this.ValeurEffet = valeurEffet;
+            this.Effet = effet;
+            this.RangeLancement = rangeLancement;
+            this.Cout = cout;
         }
 
-        public void Lancer(Vector2 position)
-        {
+        abstract public List<Entite> ObtenirCibles(Case position, List<Entite> entitesCombat);
 
+        public void Lancer(Case caseCiblee, Entite lanceur, List<Entite> entitesCombat)
+        {
+            List<Entite> entitesTouchees = ObtenirCibles(caseCiblee, entitesCombat);
+            switch (this.effet)
+            {
+                case effetSort.MODIF_PV:
+                    foreach(Entite entite in entitesTouchees)
+                    {
+                        entite.ModifPV(this.valeurEffet, lanceur);
+                    }
+                    break;
+                case effetSort.MODIF_DEFENSE:
+                    foreach (Entite entite in entitesTouchees)
+                    {
+                        entite.ModifDefense(this.valeurEffet);
+                    }
+                    break;
+                case effetSort.MODIF_ATTAQUE:
+                    foreach (Entite entite in entitesTouchees)
+                    {
+                        entite.ModifAttaque(this.valeurEffet);
+                    }
+                    break;
+                case effetSort.MODIF_PA:
+                    foreach (Entite entite in entitesTouchees)
+                    {
+                        entite.ModifPA(this.valeurEffet);
+                    }
+                    break;
+            }
+
+            lanceur.PointAction -= this.Cout;
+            lanceur.Jouable = true;
         }
 
         public string Nom
@@ -57,7 +96,7 @@ namespace SAE_1._01
             }
         }
 
-        internal typeSort Effet
+        internal effetSort Effet
         {
             get
             {
@@ -67,6 +106,32 @@ namespace SAE_1._01
             set
             {
                 this.effet = value;
+            }
+        }
+
+        public int RangeLancement
+        {
+            get
+            {
+                return this.rangeLancement;
+            }
+
+            set
+            {
+                this.rangeLancement = value;
+            }
+        }
+
+        public int Cout
+        {
+            get
+            {
+                return this.cout;
+            }
+
+            set
+            {
+                this.cout = value;
             }
         }
     }

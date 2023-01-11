@@ -78,9 +78,21 @@ namespace SAE_1._01
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Case caseCompare &&
+               this.X == caseCompare.X &&
+               this.Y == caseCompare.Y;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.X, this.Y, this.Texture);
+        }
+
         public override string ToString()
         {
-            return "position case : (" + x + "," + y + ")";
+            return "posX : " + X + " posY : " + Y + " texture : " + Texture;
         }
 
         private bool testeCollision(CreateurCarte carte)

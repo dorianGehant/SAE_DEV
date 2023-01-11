@@ -11,8 +11,8 @@ namespace SAE_1._01
 {
     internal class Ennemi : Entite
 {
-        public Ennemi(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction,Carte grille,GameManager gm)
-            : base(spritesheet, nom, position, pointVie, pointAction,grille,gm)
+        public Ennemi(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int defense, int attaque, Carte grille, List<Sort> sorts, GameManager gm)
+            : base(spritesheet, nom, position, pointVie, pointAction, defense, attaque, grille, sorts, gm)
         {
             SetEnnemi(this);
             this.PlayAnim("Idle");
@@ -21,15 +21,15 @@ namespace SAE_1._01
 
         public override void JouerTour()
         {
-            List<Entite> list = gameManager.GetListEntite();
+            List<Entite> list = Manageur.EntitesCombat;
             List<Joueur> listJoueur =  this.SeparateJoueur(list);
             List<Case>[] allStar = this.GetAllAstar(listJoueur);
             List<Case> Astar = GetCloserAstar(allStar);
-            this.Possible(gameManager._bordureCasePossible,false);
+            this.Possible(Manageur.BordureCasePossible, false);
             Astar = GetClosestPointFromAstar(Astar);
             //AfficherStar(allStar);
-            this.chemin = Astar;
-            this.jouable = false;
+            this.Chemin = Astar;
+            this.Jouable = false;
         }
 
         List<Joueur> SeparateJoueur(List<Entite> listEntite)
@@ -52,9 +52,7 @@ namespace SAE_1._01
             for (int i = 0; i < Allstar.Length; i++)
             {
                 Vector2 pos = GetCaseNextJoueur(j[i]);
-                Console.WriteLine("Ia pos : " + this.grille.TableauCases[this.Position.Y, this.Position.X]);
-                Console.WriteLine(j[i].Nom + " : " + this.grille.TableauCases[j[i].Position.Y, j[i].Position.X]);
-                Allstar[i] = this.GetChemin_A_Star(this.grille.TableauCases[this.Position.Y,this.Position.X],this.grille.TableauCases[(int)pos.Y,(int) pos.X]);
+                Allstar[i] = this.GetChemin_A_Star(this.Grille.TableauCases[this.Position.Y,this.Position.X],this.Grille.TableauCases[(int)pos.Y,(int) pos.X]);
             }
             return Allstar;
         }
@@ -65,7 +63,7 @@ namespace SAE_1._01
             Vector2 posHere = new Vector2(this.Position.X, this.Position.Y);
             int y = j.Position.Y;
             int x = j.Position.X;
-            List<Noeud> cote =  PathFinding.NoeudAdjacentDeplacable(x, y, this.grille.TableauCases);
+            List<Noeud> cote =  PathFinding.NoeudAdjacentDeplacable(x, y, this.Grille.TableauCases);
             Vector2 closer = new Vector2(cote[0].PosX,cote[0].PosY);
             for (int i = 1; i < cote.Count; i++)
             {
@@ -119,7 +117,7 @@ namespace SAE_1._01
 
                 Console.WriteLine("Ia pos : " + this.Position.Y + " " + this.Position.X);
                 Console.WriteLine(j.Nom + " : " + j.Position.Y + " " + j.Position.X);
-                this.Chemin_A_Star(this.grille.TableauCases[this.Position.Y, this.Position.X], this.grille.TableauCases[j.Position.Y, j.Position.X]);
+                this.Chemin_A_Star(this.Grille.TableauCases[this.Position.Y, this.Position.X], this.Grille.TableauCases[j.Position.Y, j.Position.X]);
         }
 
         List<Case> GetClosestPointFromAstar(List<Case> Astar)
@@ -129,8 +127,8 @@ namespace SAE_1._01
             {
                 int x = Astar[i].X;
                 int y = Astar[i].Y;
-                Console.WriteLine(this.clicDansZonePossible(this.grille.TableauCases[x,y]));
-                if (this.clicDansZonePossible(this.grille.TableauCases[x, y]))
+                Console.WriteLine(this.clicDansZonePossible(this.Grille.TableauCases[x,y]));
+                if (this.clicDansZonePossible(this.Grille.TableauCases[x, y]))
                 {
                     Console.WriteLine("add " + Astar[i]);
                     result.Add(Astar[i]);
@@ -148,13 +146,20 @@ namespace SAE_1._01
             }
             else
             {
-                gameManager.ProchaineEntite();
+                Manageur.ProchaineEntite();
             }
         }
 
         bool CheckIfPlayerRange()
         {
             return false;
+            this.Move(this.Grille.TableauCases[(int)this.Position.X+1, 0]);
+            this.GameManager.ProchaineEntite();
+        }
+
+        public override void EstTuePar(Entite tueur, List<Entite> listeEntitesVivantes)
+        {
+            listeEntitesVivantes.Remove(this);
         }
     }
 }
