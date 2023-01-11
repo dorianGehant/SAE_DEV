@@ -65,7 +65,7 @@ namespace SAE_1._01
         bool KeyPressedSpace = false; 
         bool mouseClick = false;
         AnimatedSprite spellEffect;
-        Vector2 _posSpellEffect = Vector2.Zero;
+        Vector2 _posSpellEffect;
 
         string ATQ;
         string DEF;
@@ -91,7 +91,7 @@ namespace SAE_1._01
             spriteSheetJoueur = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
             spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
             spriteSheetSpell = Content.Load<SpriteSheet>("SpellAnim.sf", new JsonContentLoader());
-            spellEffect = new AnimatedSprite(_spriteSheetSpell);
+            spellEffect = new AnimatedSprite(spriteSheetSpell);
             _bordureCase = Content.Load<Texture2D>("contour_case");
             _bordureCasePossible = Content.Load<Texture2D>("case_proposer");
             _bordureSortPossible = Content.Load<Texture2D>("bordureSortLancable");
@@ -107,13 +107,14 @@ namespace SAE_1._01
             cases = new Carte(LONGUEUR_CASE, HAUTEUR_CASE, TAILLE_CASE, _bordureCase,_map01);
             
             gameManager = new GameManager(_bordureCasePossible);
+            _posSpellEffect = new Vector2(-100, -100);
 
-            sortsBaseJoueurs.Add(new SortMonocible("attaqueCAC", -6, 1, 1, effetSort.MODIF_PV, "Slash"));
-            sortsBaseJoueurs.Add(new SortMonocible("degatDistance", -4, 4, 2, effetSort.MODIF_PV,"Boom"));
-            sortsBaseJoueurs.Add(new SortMonocible("soinDistance", 2, 4, 2, effetSort.MODIF_PV,"Heal"));
-            sortsEnnemi.Add(new SortMonocible("ennemiattaque", -4, 1, 1, effetSort.MODIF_PV,"Boom02"));
-            j1 = new Joueur(spriteSheet, "Joueur 01", cases.TableauCases[5, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
-            j2 = new Joueur(spriteSheet, "Joueur 02", cases.TableauCases[10, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
+            sortsBaseJoueurs.Add(new SortMonocible("attaqueCAC", -6, 1, 1, effetSort.MODIF_PV, spellEffect, "Slash"));
+            sortsBaseJoueurs.Add(new SortMonocible("degatDistance", -4, 4, 2, effetSort.MODIF_PV, spellEffect, "Boom"));
+            sortsBaseJoueurs.Add(new SortMonocible("soinDistance", 2, 4, 2, effetSort.MODIF_PV, spellEffect, "Heal"));
+            sortsEnnemi.Add(new SortMonocible("ennemiattaque", -4, 1, 1, effetSort.MODIF_PV, spellEffect, "Boom02"));
+            j1 = new Joueur(spriteSheetJoueur, "Joueur 01", cases.TableauCases[5, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
+            j2 = new Joueur(spriteSheetJoueur, "Joueur 02", cases.TableauCases[10, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
             ennemi = new Ennemi(spriteSheetEnnemi, "Golemo", cases.TableauCases[5, 5],7, 3, 2, 2, cases, sortsEnnemi, gameManager);
@@ -227,7 +228,7 @@ namespace SAE_1._01
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[xSouris, ySouris]))
                     {
                         _posSpellEffect = new Vector2(xSouris * cases.TailleCase + cases.TailleCase / 2, ySouris * cases.TailleCase + cases.TailleCase / 2);
-                        jouable.SortEnLancement.Lancer(cases.TableauCases[xSouris, ySouris], jouable, gameManager.EntitesCombat,spellEffect);
+                        jouable.SortEnLancement.Lancer(cases.TableauCases[xSouris, ySouris], jouable, gameManager.EntitesCombat);
                         cases.resetTextureCases(_bordureCase);
                         ancienneTexture = _bordureCase;
                         jouable.SortEnLancement = null;
@@ -301,7 +302,6 @@ namespace SAE_1._01
                 p[i].Afficher(_spriteBatch);
             }
             _spriteBatch.Draw(spellEffect, _posSpellEffect);
-            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
             //
             if(NAME != null && ATQ != null && DEF != null)
             {

@@ -24,8 +24,9 @@ namespace SAE_1._01
         private int cout;
         effetSort effet;
         string nameEffect;
+        AnimatedSprite animationSort;
 
-        public Sort(string nom, int valeurEffet, int rangeLancement, int cout, effetSort effet,string nameSpellEffect)
+        public Sort(string nom, int valeurEffet, int rangeLancement, int cout, effetSort effet, AnimatedSprite spriteSheetSorts, string nameSpellEffect)
         {
             this.Nom = nom;
             this.ValeurEffet = valeurEffet;
@@ -33,14 +34,15 @@ namespace SAE_1._01
             this.RangeLancement = rangeLancement;
             this.Cout = cout;
             this.nameEffect = nameSpellEffect;
+            this.AnimationSort = spriteSheetSorts;
         }
 
         abstract public List<Entite> ObtenirCibles(Case position, List<Entite> entitesCombat);
 
-        public void Lancer(Case caseCiblee, Entite lanceur, List<Entite> entitesCombat,AnimatedSprite effect)
+        public void Lancer(Case caseCiblee, Entite lanceur, List<Entite> entitesCombat)
         {
             List<Entite> entitesTouchees = ObtenirCibles(caseCiblee, entitesCombat);
-            effect.Play(this.nameEffect);
+            animationSort.Play(this.nameEffect);
             switch (this.effet)
             {
                 case effetSort.MODIF_PV:
@@ -135,6 +137,19 @@ namespace SAE_1._01
             set
             {
                 this.cout = value;
+            }
+        }
+
+        public AnimatedSprite AnimationSort
+        {
+            get
+            {
+                return this.animationSort;
+            }
+
+            set
+            {
+                this.animationSort = value;
             }
         }
     }
