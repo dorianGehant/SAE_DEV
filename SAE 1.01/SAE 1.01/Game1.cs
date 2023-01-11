@@ -31,6 +31,7 @@ namespace SAE_1._01
         private CreateurCarte _map01;
         private Texture2D _bordureCase;
         public Texture2D _bordureCasePossible;
+        Texture2D _encadreeCara;
 
         private Joueur _joueur1;
         private Texture2D _texturePersonnage;
@@ -72,6 +73,7 @@ namespace SAE_1._01
             _textureSelectionne = Content.Load<Texture2D>("New Piskel-1");
             _texturePersonnage = Content.Load<Texture2D>("perso");
             _font = Content.Load<SpriteFont>("Font");
+            _encadreeCara = Content.Load<Texture2D>("output-onlinepngtools(1)");
 
 
             //creation des objets utiles
@@ -139,8 +141,14 @@ namespace SAE_1._01
                     {
                         if (this.cases.TableauCases[x, y] == combattant[i].Position)
                         {
-                            combattant[i].GetCaracteristique(ref NAME, ref ATQ, ref DEF);
+                            combattant[i].GetCaracteristique(out NAME, out ATQ, out DEF);
+                            break;
                         }
+                        else
+                        {
+                            NAME = null;
+                        }
+
                     }
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x, y]))
                     {
@@ -199,9 +207,10 @@ namespace SAE_1._01
             //
             if(NAME != null && ATQ != null && DEF != null)
             {
-                _spriteBatch.DrawString(_font, NAME, new Vector2(200, 200), Color.White);
-                _spriteBatch.DrawString(_font, ATQ, new Vector2(200, 300), Color.White);
-                _spriteBatch.DrawString(_font, DEF, new Vector2(200, 400), Color.White);
+                _spriteBatch.Draw(_encadreeCara, new Vector2(550,350), Color.White);
+                _spriteBatch.DrawString(_font, NAME, new Vector2(570, 370), Color.White);
+                _spriteBatch.DrawString(_font, ATQ, new Vector2(570, 390), Color.White);
+                _spriteBatch.DrawString(_font, DEF, new Vector2(570, 410), Color.White);
             }
            
             _spriteBatch.End();
