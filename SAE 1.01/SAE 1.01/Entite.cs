@@ -265,6 +265,12 @@ namespace SAE_1._01
 
         }
 
+        public void GetCaracteristique(ref string name,ref string atq,ref string def)
+        {
+            name = this.Nom;
+            
+        }
+
         
 
     }

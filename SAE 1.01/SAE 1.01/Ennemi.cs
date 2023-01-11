@@ -144,7 +144,7 @@ namespace SAE_1._01
             this.PlayAnim("Idle");
             if (CheckIfPlayerRange())
             {
-                //attack
+                //attacks
             }
             else
             {

@@ -44,6 +44,10 @@ namespace SAE_1._01
         SpriteFont _font;
         bool KeyPressedE = false;
         bool mouseClick = false;
+
+        string ATQ;
+        string DEF;
+        string NAME;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -115,7 +119,8 @@ namespace SAE_1._01
             int y = (_etatSouris.Y + -Window.Position.Y) / TAILLE_CASE;
 
             Entite jouable = gameManager.GetEntiteTour();
-            
+            List<Entite> combattant = gameManager.GetListEntite();
+
             //verification si pas d'attente
             if (jouable.jouable)
             {
@@ -153,9 +158,14 @@ namespace SAE_1._01
             KeyPressedE = simulationKey.IsKeyDown(InputKeys.E);
             mouseClick = simulation.IsMouseDown(InputMouseButtons.Left);
             //mise a jour / update
-            j1.UpdateAnim(deltaSeconds);
-            j2.UpdateAnim(deltaSeconds);
-            ennemi.UpdateAnim(deltaSeconds);
+            
+            for (int i = 0; i < combattant.Count; i++)
+            {
+                combattant[i].UpdateAnim(deltaSeconds);
+            }
+            //j1.UpdateAnim(deltaSeconds);
+            //j2.UpdateAnim(deltaSeconds);
+            //ennemi.UpdateAnim(deltaSeconds);
             _map01.MiseAJour(gameTime);
             base.Update(gameTime);
 
@@ -179,6 +189,10 @@ namespace SAE_1._01
             j2.Afficher(_spriteBatch);
             ennemi.Afficher(_spriteBatch);
             _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
+            //
+            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(200, 200), Color.Black);
+            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(200, 200), Color.Black);
+            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(200, 200), Color.Black);
             _spriteBatch.End();
 
             base.Draw(gameTime);
