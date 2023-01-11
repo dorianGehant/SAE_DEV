@@ -46,6 +46,7 @@ namespace SAE_1._01
         private Texture2D _texturePersonnage;
         private Texture2D _textureSelectionne;
         Texture2D ancienneTexture;
+        Texture2D _encadreeCara;
         Carte cases;
         private List<Sort> sortsBaseJoueurs = new List<Sort>();
         private List<Sort> sortsEnnemi = new List<Sort>();
