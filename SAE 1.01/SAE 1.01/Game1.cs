@@ -92,12 +92,12 @@ namespace SAE_1._01
             sortsBaseJoueurs.Add(new SortMonocible("attaqueCAC", -6, 1, 1, effetSort.MODIF_PV));
             sortsBaseJoueurs.Add(new SortMonocible("degatDistance", -4, 4, 2, effetSort.MODIF_PV));
             sortsBaseJoueurs.Add(new SortMonocible("soinDistance", 2, 4, 2, effetSort.MODIF_PV));
-            sortsEnnemi.Add(new SortMonocible("ennemiattaque", -4, 1, 1, effetSort.MODIF_PV);
+            sortsEnnemi.Add(new SortMonocible("ennemiattaque", -4, 1, 1, effetSort.MODIF_PV));
             j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
             j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],7, 3, 2, 2, cases, sortsEnnemi, gameManager));
+            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],7, 3, 2, 2, cases, sortsEnnemi, gameManager);
             gameManager.AjouterCombattant(ennemi);
 
             ancienneTexture = _bordureCase;
@@ -250,7 +250,6 @@ namespace SAE_1._01
             {
                 entite.Afficher(_spriteBatch);
             }
-            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
             _spriteBatch.End();
 
             base.Draw(gameTime);
