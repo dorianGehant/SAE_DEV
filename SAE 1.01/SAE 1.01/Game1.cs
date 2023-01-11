@@ -120,7 +120,7 @@ namespace SAE_1._01
 
             Entite jouable = gameManager.GetEntiteTour();
             List<Entite> combattant = gameManager.GetListEntite();
-
+            
             //verification si pas d'attente
             if (jouable.jouable)
             {
@@ -135,6 +135,13 @@ namespace SAE_1._01
                     {
                     //verification clique
                     //Console.WriteLine(jouable.Nom);
+                    for (int i = 0; i < combattant.Count; i++)
+                    {
+                        if (this.cases.TableauCases[x, y] == combattant[i].Position)
+                        {
+                            combattant[i].GetCaracteristique(ref NAME, ref ATQ, ref DEF);
+                        }
+                    }
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[x, y]))
                     {
                         //On bouge le joueur ou on clique
@@ -190,9 +197,13 @@ namespace SAE_1._01
             ennemi.Afficher(_spriteBatch);
             _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
             //
-            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(200, 200), Color.Black);
-            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(200, 200), Color.Black);
-            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(200, 200), Color.Black);
+            if(NAME != null && ATQ != null && DEF != null)
+            {
+                _spriteBatch.DrawString(_font, NAME, new Vector2(200, 200), Color.White);
+                _spriteBatch.DrawString(_font, ATQ, new Vector2(200, 300), Color.White);
+                _spriteBatch.DrawString(_font, DEF, new Vector2(200, 400), Color.White);
+            }
+           
             _spriteBatch.End();
 
             base.Draw(gameTime);
