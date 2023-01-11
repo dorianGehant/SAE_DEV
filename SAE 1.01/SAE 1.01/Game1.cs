@@ -58,6 +58,7 @@ namespace SAE_1._01
 
         SpriteSheet spriteSheetJoueur;
         SpriteSheet spriteSheetEnnemi;
+        SpriteSheet spriteSheetSpell;
 
         private bool partieTerminee = false;
 
@@ -87,12 +88,10 @@ namespace SAE_1._01
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             //On load les differents elements
-            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
-            SpriteSheet spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
-            SpriteSheet _spriteSheetSpell = Content.Load<SpriteSheet>("SpellAnim.sf", new JsonContentLoader());
-            spellEffect = new AnimatedSprite(_spriteSheetSpell);
             spriteSheetJoueur = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
             spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
+            spriteSheetSpell = Content.Load<SpriteSheet>("SpellAnim.sf", new JsonContentLoader());
+            spellEffect = new AnimatedSprite(_spriteSheetSpell);
             _bordureCase = Content.Load<Texture2D>("contour_case");
             _bordureCasePossible = Content.Load<Texture2D>("case_proposer");
             _bordureSortPossible = Content.Load<Texture2D>("bordureSortLancable");
