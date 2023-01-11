@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using MonoGame.Extended.Sprites;
 namespace SAE_1._01
 {
 
@@ -23,21 +23,24 @@ namespace SAE_1._01
         private int rangeLancement;
         private int cout;
         effetSort effet;
+        string nameEffect;
 
-        public Sort(string nom, int valeurEffet, int rangeLancement, int cout, effetSort effet)
+        public Sort(string nom, int valeurEffet, int rangeLancement, int cout, effetSort effet,string nameSpellEffect)
         {
             this.Nom = nom;
             this.ValeurEffet = valeurEffet;
             this.Effet = effet;
             this.RangeLancement = rangeLancement;
             this.Cout = cout;
+            this.nameEffect = nameSpellEffect;
         }
 
         abstract public List<Entite> ObtenirCibles(Case position, List<Entite> entitesCombat);
 
-        public void Lancer(Case caseCiblee, Entite lanceur, List<Entite> entitesCombat)
+        public void Lancer(Case caseCiblee, Entite lanceur, List<Entite> entitesCombat,AnimatedSprite effect)
         {
             List<Entite> entitesTouchees = ObtenirCibles(caseCiblee, entitesCombat);
+            effect.Play(this.nameEffect);
             switch (this.effet)
             {
                 case effetSort.MODIF_PV:

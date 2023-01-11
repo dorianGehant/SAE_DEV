@@ -46,6 +46,7 @@ namespace SAE_1._01
         private Texture2D _texturePersonnage;
         private Texture2D _textureSelectionne;
         Texture2D ancienneTexture;
+        Texture2D _encadreeCara;
         Carte cases;
         private List<Sort> sortsBaseJoueurs = new List<Sort>();
         private List<Sort> sortsEnnemi = new List<Sort>();
@@ -62,6 +63,13 @@ namespace SAE_1._01
 
         bool KeyPressedSpace = false; 
         bool mouseClick = false;
+        AnimatedSprite spellEffect;
+        Vector2 _posSpellEffect = Vector2.Zero;
+
+        string ATQ;
+        string DEF;
+        string NAME;
+        string PV;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -79,6 +87,10 @@ namespace SAE_1._01
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             //On load les differents elements
+            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
+            SpriteSheet spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
+            SpriteSheet _spriteSheetSpell = Content.Load<SpriteSheet>("SpellAnim.sf", new JsonContentLoader());
+            spellEffect = new AnimatedSprite(_spriteSheetSpell);
             spriteSheetJoueur = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
             spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
             _bordureCase = Content.Load<Texture2D>("contour_case");
@@ -88,6 +100,7 @@ namespace SAE_1._01
             _textureSelectionne = Content.Load<Texture2D>("New Piskel-1");
             _texturePersonnage = Content.Load<Texture2D>("perso");
             _font = Content.Load<SpriteFont>("Font");
+            _encadreeCara = Content.Load<Texture2D>("output-onlinepngtools(1)");
 
 
             //creation des objets utiles
@@ -96,15 +109,15 @@ namespace SAE_1._01
             
             gameManager = new GameManager(_bordureCasePossible);
 
-            sortsBaseJoueurs.Add(new SortMonocible("attaqueCAC", -6, 1, 1, effetSort.MODIF_PV));
-            sortsBaseJoueurs.Add(new SortMonocible("degatDistance", -4, 4, 2, effetSort.MODIF_PV));
-            sortsBaseJoueurs.Add(new SortMonocible("soinDistance", 2, 4, 2, effetSort.MODIF_PV));
-            sortsEnnemi.Add(new SortMonocible("ennemiattaque", -4, 1, 1, effetSort.MODIF_PV));
-            j1 = new Joueur(spriteSheetJoueur, "j1", cases.TableauCases[5, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
-            j2 = new Joueur(spriteSheetJoueur, "j2", cases.TableauCases[10, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
+            sortsBaseJoueurs.Add(new SortMonocible("attaqueCAC", -6, 1, 1, effetSort.MODIF_PV, "Slash"));
+            sortsBaseJoueurs.Add(new SortMonocible("degatDistance", -4, 4, 2, effetSort.MODIF_PV,"Boom"));
+            sortsBaseJoueurs.Add(new SortMonocible("soinDistance", 2, 4, 2, effetSort.MODIF_PV,"Heal"));
+            sortsEnnemi.Add(new SortMonocible("ennemiattaque", -4, 1, 1, effetSort.MODIF_PV,"Boom02"));
+            j1 = new Joueur(spriteSheet, "Joueur 01", cases.TableauCases[5, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
+            j2 = new Joueur(spriteSheet, "Joueur 02", cases.TableauCases[10, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheetEnnemi, "e1", cases.TableauCases[5, 5],7, 3, 2, 2, cases, sortsEnnemi, gameManager);
+            ennemi = new Ennemi(spriteSheetEnnemi, "Golemo", cases.TableauCases[5, 5],7, 3, 2, 2, cases, sortsEnnemi, gameManager);
             gameManager.AjouterCombattant(ennemi);
 
             ancienneTexture = _bordureCase;
@@ -144,6 +157,7 @@ namespace SAE_1._01
             ySouris = (_etatSouris.Y + - Window.Position.Y) / TAILLE_CASE;
 
             Entite jouable = gameManager.GetEntiteTour();
+            List<Entite> combattant = gameManager.GetListEntite();
             
             //verification si pas d'attente
             if (jouable.Jouable)
@@ -213,7 +227,8 @@ namespace SAE_1._01
 
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[xSouris, ySouris]))
                     {
-                        jouable.SortEnLancement.Lancer(cases.TableauCases[xSouris, ySouris], jouable, gameManager.EntitesCombat);
+                        _posSpellEffect = new Vector2(xSouris * cases.TailleCase + cases.TailleCase / 2, ySouris * cases.TailleCase + cases.TailleCase / 2);
+                        jouable.SortEnLancement.Lancer(cases.TableauCases[xSouris, ySouris], jouable, gameManager.EntitesCombat,spellEffect);
                         cases.resetTextureCases(_bordureCase);
                         ancienneTexture = _bordureCase;
                         jouable.SortEnLancement = null;
@@ -237,16 +252,30 @@ namespace SAE_1._01
                 cases.TableauCases[xSourisPrecedent, ySourisPrecedent].Texture = ancienneTexture;
                 ancienneTexture = cases.TableauCases[xSouris, ySouris].Texture;
                 cases.TableauCases[xSouris, ySouris].Texture = _bordureCaseSelectionne;
+                for (int i = 0; i < combattant.Count; i++)
+                {
+                    if (this.cases.TableauCases[xSouris, ySouris] == combattant[i].Position)
+                    {
+                        combattant[i].GetCaracteristique(out NAME, out ATQ, out DEF,out PV);
+                        break;
+                    }
+                    else
+                    {
+                        NAME = null;
+                    }
+
+                }
             }
-
-
 
             KeyPressedSpace = simulationKey.IsKeyDown(InputKeys.Space);
             mouseClick = simulation.IsMouseDown(InputMouseButtons.Left);
             //mise a jour / update
-            j1.UpdateAnim(deltaSeconds);
-            j2.UpdateAnim(deltaSeconds);
-            ennemi.UpdateAnim(deltaSeconds);
+            
+            for (int i = 0; i < combattant.Count; i++)
+            {
+                combattant[i].UpdateAnim(deltaSeconds);
+            }
+            spellEffect.Update(deltaSeconds);
             _map01.MiseAJour(gameTime);
 
             base.Update(gameTime);
@@ -266,10 +295,27 @@ namespace SAE_1._01
             _spriteBatch.Begin();
             _map01.Dessiner();
             cases.AfficherMap(_spriteBatch);
-            foreach(Entite entite in gameManager.EntitesCombat)
+            //_spriteBatch.Draw(selectionne.Texture, new Vector2(selectionne.X * TAILLE_CASE, selectionne.Y * TAILLE_CASE), Color.White);
+            List<Entite> p =  gameManager.GetListEntite();
+            for (int i = 0; i < p.Count; i++)
             {
-                entite.Afficher(_spriteBatch);
+                p[i].Afficher(_spriteBatch);
             }
+            _spriteBatch.Draw(spellEffect, _posSpellEffect);
+            _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
+            //
+            if(NAME != null && ATQ != null && DEF != null)
+            {
+                _spriteBatch.Draw(_encadreeCara, new Vector2(550,350), Color.White);
+                _spriteBatch.DrawString(_font, NAME, new Vector2(570, 370), Color.White);
+                _spriteBatch.DrawString(_font, "PV :", new Vector2(570, 390), Color.White);
+                _spriteBatch.DrawString(_font, PV, new Vector2(610, 390), Color.White);
+                _spriteBatch.DrawString(_font, "ATQ :", new Vector2(570, 410), Color.White);
+                _spriteBatch.DrawString(_font, ATQ, new Vector2(620, 410), Color.White);
+                _spriteBatch.DrawString(_font, "DEF :", new Vector2(570, 430), Color.White);
+                _spriteBatch.DrawString(_font, DEF, new Vector2(620, 430), Color.White);
+            }
+           
             _spriteBatch.End();
 
             base.Draw(gameTime);

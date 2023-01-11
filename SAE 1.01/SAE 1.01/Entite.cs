@@ -408,7 +408,7 @@ namespace SAE_1._01
             }
             this.pointVie += valeurModif;
 
-            if(this.PointVie < 0)
+            if(this.PointVie <= 0)
             {
                 this.EstTuePar(lanceur, Manageur.EntitesCombat);
             }
@@ -423,6 +423,16 @@ namespace SAE_1._01
         {
             this.Defense += valeurModif;
         }
+        public void GetCaracteristique(out string name,out string atq,out string def,out string pv)
+        {
+            name = this.Nom;
+            atq = this.Attaque.ToString();
+            def = this.Defense.ToString();
+            pv = this.PointVie.ToString();
+            
+        }
+
+        
 
         public void ModifPA(int valeurModif)
         {
