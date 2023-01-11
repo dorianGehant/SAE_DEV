@@ -57,7 +57,7 @@ namespace SAE_1._01
         SpriteFont _font;
         bool KeyPressedSpace = false; 
         bool mouseClick = false;
-        AnimatedSprite spelleEffect;
+        AnimatedSprite spellEffect;
         Vector2 _posSpellEffect = Vector2.Zero;
 
         string ATQ;
@@ -84,7 +84,7 @@ namespace SAE_1._01
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
             SpriteSheet spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
             SpriteSheet _spriteSheetSpell = Content.Load<SpriteSheet>("SpellAnim.sf", new JsonContentLoader());
-            spelleEffect = new AnimatedSprite(_spriteSheetSpell);
+            spellEffect = new AnimatedSprite(_spriteSheetSpell);
             _bordureCase = Content.Load<Texture2D>("contour_case");
             _bordureCasePossible = Content.Load<Texture2D>("case_proposer");
             _bordureSortPossible = Content.Load<Texture2D>("bordureSortLancable");
@@ -213,7 +213,7 @@ namespace SAE_1._01
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[xSouris, ySouris]))
                     {
                         _posSpellEffect = new Vector2(xSouris * cases.TailleCase + cases.TailleCase / 2, ySouris * cases.TailleCase + cases.TailleCase / 2);
-                        jouable.SortEnLancement.Lancer(cases.TableauCases[xSouris, ySouris], jouable, gameManager.EntitesCombat,spelleEffect);
+                        jouable.SortEnLancement.Lancer(cases.TableauCases[xSouris, ySouris], jouable, gameManager.EntitesCombat,spellEffect);
                         cases.resetTextureCases(_bordureCase);
                         ancienneTexture = _bordureCase;
                         jouable.SortEnLancement = null;
@@ -260,7 +260,7 @@ namespace SAE_1._01
             {
                 combattant[i].UpdateAnim(deltaSeconds);
             }
-            spelleEffect.Update(deltaSeconds);
+            spellEffect.Update(deltaSeconds);
             _map01.MiseAJour(gameTime);
             base.Update(gameTime);
 
@@ -285,7 +285,7 @@ namespace SAE_1._01
             {
                 p[i].Afficher(_spriteBatch);
             }
-            _spriteBatch.Draw(spelleEffect, _posSpellEffect);
+            _spriteBatch.Draw(spellEffect, _posSpellEffect);
             _spriteBatch.DrawString(_font, gameManager.GetIndexTurn().ToString(), new Vector2(100, 100), Color.Black);
             //
             if(NAME != null && ATQ != null && DEF != null)
