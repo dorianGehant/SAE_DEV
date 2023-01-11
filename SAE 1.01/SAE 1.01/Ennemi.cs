@@ -14,7 +14,9 @@ namespace SAE_1._01
         public Ennemi(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int defense, int attaque, Carte grille, List<Sort> sorts, GameManager gm)
             : base(spritesheet, nom, position, pointVie, pointAction, defense, attaque, grille, sorts, gm)
         {
-            Jouable = false;
+            SetEnnemi(this);
+            this.PlayAnim("Idle");
+            jouable = false;
         }
 
         public override void JouerTour()
@@ -137,6 +139,7 @@ namespace SAE_1._01
 
         public override void DeplacementFini()
         {
+            this.PlayAnim("Idle");
             if (CheckIfPlayerRange())
             {
                 //attack

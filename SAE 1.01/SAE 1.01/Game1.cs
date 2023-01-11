@@ -74,6 +74,7 @@ namespace SAE_1._01
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             //On load les differents elements
             SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
+            SpriteSheet spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
             _bordureCase = Content.Load<Texture2D>("contour_case");
             _bordureCasePossible = Content.Load<Texture2D>("case_proposer");
             _bordureSortPossible = Content.Load<Texture2D>("bordureSortLancable");
@@ -228,6 +229,7 @@ namespace SAE_1._01
             //mise a jour / update
             j1.UpdateAnim(deltaSeconds);
             j2.UpdateAnim(deltaSeconds);
+            ennemi.UpdateAnim(deltaSeconds);
             _map01.MiseAJour(gameTime);
             base.Update(gameTime);
 
