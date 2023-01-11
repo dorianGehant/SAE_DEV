@@ -54,6 +54,12 @@ namespace SAE_1._01
         Ennemi ennemi;
         GameManager gameManager;
         SpriteFont _font;
+
+        SpriteSheet spriteSheetJoueur;
+        SpriteSheet spriteSheetEnnemi;
+
+        private bool partieTerminee = false;
+
         bool KeyPressedSpace = false; 
         bool mouseClick = false;
         public Game1()
@@ -73,8 +79,8 @@ namespace SAE_1._01
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             //On load les differents elements
-            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
-            SpriteSheet spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
+            spriteSheetJoueur = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
+            spriteSheetEnnemi = Content.Load<SpriteSheet>("EnnemiAnimation.sf", new JsonContentLoader());
             _bordureCase = Content.Load<Texture2D>("contour_case");
             _bordureCasePossible = Content.Load<Texture2D>("case_proposer");
             _bordureSortPossible = Content.Load<Texture2D>("bordureSortLancable");
@@ -94,11 +100,11 @@ namespace SAE_1._01
             sortsBaseJoueurs.Add(new SortMonocible("degatDistance", -4, 4, 2, effetSort.MODIF_PV));
             sortsBaseJoueurs.Add(new SortMonocible("soinDistance", 2, 4, 2, effetSort.MODIF_PV));
             sortsEnnemi.Add(new SortMonocible("ennemiattaque", -4, 1, 1, effetSort.MODIF_PV));
-            j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
-            j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
+            j1 = new Joueur(spriteSheetJoueur, "j1", cases.TableauCases[5, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
+            j2 = new Joueur(spriteSheetJoueur, "j2", cases.TableauCases[10, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],7, 3, 2, 2, cases, sortsEnnemi, gameManager);
+            ennemi = new Ennemi(spriteSheetEnnemi, "e1", cases.TableauCases[5, 5],7, 3, 2, 2, cases, sortsEnnemi, gameManager);
             gameManager.AjouterCombattant(ennemi);
 
             ancienneTexture = _bordureCase;
@@ -142,11 +148,18 @@ namespace SAE_1._01
             //verification si pas d'attente
             if (jouable.Jouable)
             {
+                if (partieTerminee = gameManager.CheckSiPartieTerminee())
+                {
+
+                }
+
+
                 jouable.Possible(_bordureCasePossible);
 
                 //on verifie si la souris se trouve bien sur une case
 
-
+                if (xSouris >= 0 && xSouris < LONGUEUR_CASE && ySouris >= 0 && ySouris < HAUTEUR_CASE)
+                {
                     //verification clique
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[xSouris, ySouris]))
                     {
@@ -160,11 +173,13 @@ namespace SAE_1._01
                         jouable.Chemin_A_Star(cases.TableauCases[jouable.Position.Y, jouable.Position.X], cases.TableauCases[ySouris, xSouris]);
                         Console.WriteLine(jouable.Grille.TableauCases[jouable.Position.X, jouable.Position.Y].Collision);
                     }
+                }
 
                 if (simulationKey.IsKeyDown(InputKeys.Space) && KeyPressedSpace == false)
                 {
                     jouable.enleverPossible(_bordureCase);
                     gameManager.ProchaineEntite();
+                    ancienneTexture = _bordureCase;
                 }
 
                 if (simulationKey.IsKeyDown(InputKeys.A) && jouable.PointAction >= jouable.Sorts[0].Cout)
@@ -224,6 +239,8 @@ namespace SAE_1._01
                 cases.TableauCases[xSouris, ySouris].Texture = _bordureCaseSelectionne;
             }
 
+
+
             KeyPressedSpace = simulationKey.IsKeyDown(InputKeys.Space);
             mouseClick = simulation.IsMouseDown(InputMouseButtons.Left);
             //mise a jour / update
@@ -231,6 +248,7 @@ namespace SAE_1._01
             j2.UpdateAnim(deltaSeconds);
             ennemi.UpdateAnim(deltaSeconds);
             _map01.MiseAJour(gameTime);
+
             base.Update(gameTime);
 
         }

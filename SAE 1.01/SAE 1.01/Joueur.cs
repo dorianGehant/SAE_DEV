@@ -29,9 +29,26 @@ namespace SAE_1._01
             this.PlayAnim("Idle");
         }
 
-        public override void EstTuePar(Entite tueur, List<Entite> listeEntitesVivantes)
+        public override void MoveChemin(float deltaSeconds)
         {
-            listeEntitesVivantes.Remove(this);
+            if (Chemin == null || Chemin.Count == 0)
+            {
+                this.Jouable = true;
+                PlayAnim("Idle");
+            }
+
+            TimeNextCase -= deltaSeconds;
+            if (TimeNextCase <= 0)
+            {
+                this.Move(Chemin[0]);
+                Chemin.RemoveAt(0);
+                TimeNextCase = SPEED_BETWEEN_CASE;
+                if (Chemin.Count == 0)
+                {
+                    DeplacementFini();
+                }
+
+            }
         }
     }
 }

@@ -225,6 +225,11 @@ namespace SAE_1._01
             List<int[]> parcour = new List<int[]> { };
             parcour.Add(new int[] { depart.X, depart.Y, cout });
 
+            if (ignoreCollision)
+            {
+                resultat.Add(new int[] { depart.X, depart.Y, cout });
+            }
+
             while (parcour.Count != 0)
             {
                 cout = parcour[0][2] + 1;

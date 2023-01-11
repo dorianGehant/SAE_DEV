@@ -78,6 +78,29 @@ namespace SAE_1._01
             return -1;
         }
 
+        public List<Joueur> SeparateJoueur()
+        {
+            List<Joueur> j = new List<Joueur>();
+            for (int i = 0; i < EntitesCombat.Count; i++)
+            {
+                if (typeof(Joueur).IsInstanceOfType(EntitesCombat[i]))
+                {
+                    j.Add((Joueur)EntitesCombat[i]);
+                }
+            }
+            return j;
+
+        }
+
+        public bool CheckSiPartieTerminee()
+        {
+            if(this.SeparateJoueur().Count == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public int GetIndexTurn()
         {
             return ChercherEntiteIndex(entiteTour);

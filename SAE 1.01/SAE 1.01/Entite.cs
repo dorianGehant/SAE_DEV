@@ -41,7 +41,7 @@ namespace SAE_1._01
             this.pointActionMax = pointAction;
             this.Sorts = sorts;
             this.Grille = carte;
-            this.GameManager = gm;
+            this.Manageur = gm;
             Vector2 pos = this.GetPositionCase(Grille.TailleCase);
             this.Move(Grille.TableauCases[(int)pos.X, (int)pos.Y]);
             this.Jouable = true;
@@ -207,19 +207,6 @@ namespace SAE_1._01
             }
         }
 
-        internal GameManager GameManager
-        {
-            get
-            {
-                return this.Manageur;
-            }
-
-            set
-            {
-                this.Manageur = value;
-            }
-        }
-
         internal List<Case> Chemin
         {
             get
@@ -372,27 +359,7 @@ namespace SAE_1._01
                 Grille.TableauCases[this.Cases_possibles[i][0], this.Cases_possibles[i][1]].Texture = _bordureCase;
             }
         }
-        public void MoveChemin(float deltaSeconds)
-        {
-            if (Chemin == null || Chemin.Count == 0)
-            {
-                this.Jouable = true;
-                PlayAnim("Idle");
-            }
-            TimeNextCase -= deltaSeconds;
-            if (TimeNextCase <= 0)
-            {
-                this.Move(Chemin[0]);
-                Chemin.RemoveAt(0);
-                TimeNextCase = SPEED_BETWEEN_CASE;
-                if(chemin.Count == 0)
-                {
-                    DeplacementFini();
-                }
-
-            }
-
-        }
+        abstract public void MoveChemin(float deltaSeconds);
 
         abstract public void DeplacementFini();
 
@@ -421,7 +388,11 @@ namespace SAE_1._01
             return chemin;
         }
 
-        abstract public void EstTuePar(Entite tueur, List<Entite> listeEntitesVivantes);
+        public void EstTuePar(Entite tueur, List<Entite> listeEntitesVivantes)
+        {
+            Grille.TableauCases[this.Position.X, this.Position.Y].Collision = false; 
+            listeEntitesVivantes.Remove(this);
+        }
 
         public void ModifPV(int valeurModif, Entite lanceur)
         {

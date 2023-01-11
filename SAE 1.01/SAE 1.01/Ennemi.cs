@@ -14,36 +14,64 @@ namespace SAE_1._01
         public Ennemi(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int defense, int attaque, Carte grille, List<Sort> sorts, GameManager gm)
             : base(spritesheet, nom, position, pointVie, pointAction, defense, attaque, grille, sorts, gm)
         {
-            SetEnnemi(this);
             this.PlayAnim("Idle");
-            jouable = false;
+            grille.TableauCases[position.X, position.Y].Collision = true; 
+            Jouable = false;
         }
 
         public override void JouerTour()
         {
-            List<Entite> list = Manageur.EntitesCombat;
-            List<Joueur> listJoueur =  this.SeparateJoueur(list);
+            List<Joueur> listJoueur =  Manageur.SeparateJoueur();
             List<Case>[] allStar = this.GetAllAstar(listJoueur);
             List<Case> Astar = GetCloserAstar(allStar);
             this.Possible(Manageur.BordureCasePossible, false);
             Astar = GetClosestPointFromAstar(Astar);
             //AfficherStar(allStar);
             this.Chemin = Astar;
+            this.PointAction -= Astar.Count();
             this.Jouable = false;
         }
 
-        List<Joueur> SeparateJoueur(List<Entite> listEntite)
+        private void EssaiAttaqueJoueur()
         {
-            List<Joueur> j = new List<Joueur>();
-            for (int i = 0; i < listEntite.Count; i++)
+            List<Joueur> joueurs = Manageur.SeparateJoueur();
+            List<int[]> coordCasesAdjacentes = PathFinding.findpath(this.Position, Grille.TableauCases, 1, true);
+            foreach (int[] coord in coordCasesAdjacentes)
             {
-                if (typeof(Joueur).IsInstanceOfType(listEntite[i]))
+                foreach (Joueur joueur in joueurs)
                 {
-                    j.Add((Joueur)listEntite[i]);
+                    if (coord[0] == joueur.Position.X && coord[1] == joueur.Position.Y && this.PointAction >= 1)
+                    {
+                        this.PlayAnim("attaque");
+                        this.Sorts[0].Lancer(joueur.Position, this, Manageur.EntitesCombat);
+                    }
                 }
             }
-            return j;
+        }
 
+        public override void MoveChemin(float deltaSeconds)
+        {
+            if (Chemin == null || Chemin.Count == 0)
+            {
+                this.EssaiAttaqueJoueur();
+                Manageur.ProchaineEntite();
+                return;
+            }
+            else
+            {
+                TimeNextCase -= deltaSeconds;
+                if (TimeNextCase <= 0)
+                {
+                    this.Move(Chemin[0]);
+                    Chemin.RemoveAt(0);
+                    TimeNextCase = SPEED_BETWEEN_CASE;
+                    if (Chemin.Count == 0)
+                    {
+                        DeplacementFini();
+                    }
+
+                }
+            }
         }
 
         List<Case>[] GetAllAstar(List<Joueur> j) 
@@ -140,26 +168,7 @@ namespace SAE_1._01
         public override void DeplacementFini()
         {
             this.PlayAnim("Idle");
-            if (CheckIfPlayerRange())
-            {
-                //attack
-            }
-            else
-            {
-                Manageur.ProchaineEntite();
-            }
-        }
-
-        bool CheckIfPlayerRange()
-        {
-            return false;
-            this.Move(this.Grille.TableauCases[(int)this.Position.X+1, 0]);
-            this.GameManager.ProchaineEntite();
-        }
-
-        public override void EstTuePar(Entite tueur, List<Entite> listeEntitesVivantes)
-        {
-            listeEntitesVivantes.Remove(this);
+            this.EssaiAttaqueJoueur();
         }
     }
 }
