@@ -93,5 +93,10 @@ namespace SAE_1._01
             return entiteTour;
         }
 
+        public List<Entite> GetListEntite()
+        {
+            return entitesCombat;
+        }
+
 }
 }

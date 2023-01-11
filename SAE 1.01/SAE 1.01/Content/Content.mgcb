@@ -42,6 +42,30 @@
 /processorParam:TextureFormat=Color
 /build:anim attaque.png
 
+#begin bordureCaseSelectionne.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:bordureCaseSelectionne.png
+
+#begin bordureSortLancable.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:bordureSortLancable.png
+
 #begin case_proposer.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -53,18 +77,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:case_proposer.png
-
-#begin characters.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:characters.png
 
 #begin contour_case.png
 /importer:TextureImporter
@@ -84,6 +96,18 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
+
+#begin HealEffect(1).png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HealEffect(1).png
 
 #begin IdleEnnemi.png
 /importer:TextureImporter
@@ -172,6 +196,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Slates [32x32px orthogonal tileset by Ivan Voirol].png
+
+#begin SpellAnim.sf
+/importer:SpriteFactoryContentImporter
+/processor:SpriteFactoryContentProcessor
+/processorParam:ContentType=MonoGame.Extended MonoGame.Extended.Animations.SpriteFactory.SpriteFactoryFileReader, MonoGame.Extended.Animations
+/build:SpellAnim.sf
 
 #begin spritesheet perso.png
 /importer:TextureImporter

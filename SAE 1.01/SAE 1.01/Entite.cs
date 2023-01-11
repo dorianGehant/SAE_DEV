@@ -378,6 +378,7 @@ namespace SAE_1._01
             {
                 this.Jouable = true;
                 PlayAnim("Idle");
+                return;
             }
             TimeNextCase -= deltaSeconds;
             if (TimeNextCase <= 0)
@@ -437,7 +438,7 @@ namespace SAE_1._01
             }
             this.pointVie += valeurModif;
 
-            if(this.PointVie < 0)
+            if(this.PointVie <= 0)
             {
                 this.EstTuePar(lanceur, Manageur.EntitesCombat);
             }
@@ -452,11 +453,12 @@ namespace SAE_1._01
         {
             this.Defense += valeurModif;
         }
-        public void GetCaracteristique(out string name,out string atq,out string def)
+        public void GetCaracteristique(out string name,out string atq,out string def,out string pv)
         {
             name = this.Nom;
-            atq = "8";
-            def = "5";
+            atq = this.Attaque.ToString();
+            def = this.Defense.ToString();
+            pv = this.PointVie.ToString();
             
         }
 

@@ -9,8 +9,8 @@ namespace SAE_1._01
 {
     internal class SortMonocible : Sort
     {
-        public SortMonocible(string nom, int valeurEffet, int rangeLancement, int cout, effetSort effet)
-            : base(nom, valeurEffet, rangeLancement, cout, effet)
+        public SortMonocible(string nom, int valeurEffet, int rangeLancement, int cout, effetSort effet,string nameEffect)
+            : base(nom, valeurEffet, rangeLancement, cout, effet,nameEffect)
         {
 
         }

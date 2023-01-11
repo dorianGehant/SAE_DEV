@@ -14,9 +14,8 @@ namespace SAE_1._01
         public Ennemi(SpriteSheet spritesheet, string nom, Case position, int pointVie, int pointAction, int defense, int attaque, Carte grille, List<Sort> sorts, GameManager gm)
             : base(spritesheet, nom, position, pointVie, pointAction, defense, attaque, grille, sorts, gm)
         {
-            SetEnnemi(this);
             this.PlayAnim("Idle");
-            jouable = false;
+            Jouable = false;
         }
 
         public override void JouerTour()
