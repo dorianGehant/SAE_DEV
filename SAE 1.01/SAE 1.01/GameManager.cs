@@ -26,9 +26,22 @@ namespace SAE_1._01
             }
         }
 
+        public Texture2D BordureCasePossible
+        {
+            get
+            {
+                return this._bordureCasePossible;
+            }
+
+            set
+            {
+                this._bordureCasePossible = value;
+            }
+        }
+
         public GameManager(Texture2D _bordureCasePossible)
         {
-            this._bordureCasePossible = _bordureCasePossible;
+            this.BordureCasePossible = _bordureCasePossible;
         }
         public void CommencerJeu()
         {
@@ -51,8 +64,6 @@ namespace SAE_1._01
         {
             entiteTour = e;
             e.ResetPA();
-            Console.WriteLine(e.jouable);
-            Console.WriteLine(e.PointAction);
             e.JouerTour();
         }
         int ChercherEntiteIndex(Entite entite)

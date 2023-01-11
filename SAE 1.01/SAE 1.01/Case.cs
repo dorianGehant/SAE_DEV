@@ -85,6 +85,16 @@ namespace SAE_1._01
                this.Y == caseCompare.Y;
         }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.X, this.Y, this.Texture);
+        }
+
+        public override string ToString()
+        {
+            return "posX : " + X + " posY : " + Y + " texture : " + Texture;
+        }
+
         private bool testeCollision(CreateurCarte carte)
         {
             int test = (int)carte.CollisionLayer.Tiles[190].GlobalIdentifier;

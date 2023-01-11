@@ -48,6 +48,7 @@ namespace SAE_1._01
         Texture2D ancienneTexture;
         Carte cases;
         private List<Sort> sortsBaseJoueurs = new List<Sort>();
+        private List<Sort> sortsEnnemi = new List<Sort>();
         Joueur j1;
         Joueur j2;
         Ennemi ennemi;
@@ -91,11 +92,12 @@ namespace SAE_1._01
             sortsBaseJoueurs.Add(new SortMonocible("attaqueCAC", -6, 1, 1, effetSort.MODIF_PV));
             sortsBaseJoueurs.Add(new SortMonocible("degatDistance", -4, 4, 2, effetSort.MODIF_PV));
             sortsBaseJoueurs.Add(new SortMonocible("soinDistance", 2, 4, 2, effetSort.MODIF_PV));
+            sortsEnnemi.Add(new SortMonocible("ennemiattaque", -4, 1, 1, effetSort.MODIF_PV);
             j1 = new Joueur(spriteSheet, "j1", cases.TableauCases[5, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
             j2 = new Joueur(spriteSheet, "j2", cases.TableauCases[10, 5], 8, 7, 3, 5, cases, sortsBaseJoueurs, gameManager);
             gameManager.AjouterCombattant(j1);
             gameManager.AjouterCombattant(j2);
-            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],1, 1, 2, 2, cases, sortsBaseJoueurs, gameManager);
+            ennemi = new Ennemi(spriteSheet, "e1", cases.TableauCases[5, 5],7, 3, 2, 2, cases, sortsEnnemi, gameManager));
             gameManager.AjouterCombattant(ennemi);
 
             ancienneTexture = _bordureCase;
@@ -190,12 +192,15 @@ namespace SAE_1._01
                 if (jouable.SortEnLancement != null)
                 {
                     jouable.enleverPossible(_bordureCase);
+                    ancienneTexture = _bordureCase;
                     jouable.Possible(_bordureSortPossible, jouable.SortEnLancement);
 
                     if (simulation.IsMouseDown(InputMouseButtons.Left) && mouseClick == false && jouable.clicDansZonePossible(cases.TableauCases[xSouris, ySouris]))
                     {
                         jouable.SortEnLancement.Lancer(cases.TableauCases[xSouris, ySouris], jouable, gameManager.EntitesCombat);
                         cases.resetTextureCases(_bordureCase);
+                        ancienneTexture = _bordureCase;
+                        jouable.SortEnLancement = null;
                         jouable.PlayAnim("Idle");
                     }
 

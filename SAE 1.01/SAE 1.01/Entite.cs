@@ -211,12 +211,12 @@ namespace SAE_1._01
         {
             get
             {
-                return this.gameManager;
+                return this.Manageur;
             }
 
             set
             {
-                this.gameManager = value;
+                this.Manageur = value;
             }
         }
 
@@ -272,6 +272,19 @@ namespace SAE_1._01
             }
         }
 
+        internal GameManager Manageur
+        {
+            get
+            {
+                return this.gameManager;
+            }
+
+            set
+            {
+                this.gameManager = value;
+            }
+        }
+
         abstract public void JouerTour();
       
 
@@ -320,17 +333,23 @@ namespace SAE_1._01
             List<int[]> deplacementPossible = PathFinding.findpath(this.Position, Grille.TableauCases , this.PointAction, false);
             for (int i = 0; i < deplacementPossible.Count-1; i++)
             {
-                Grille.TableauCases[deplacementPossible[i][0],deplacementPossible[i][1]].Texture = _bordureCasePossible;
+                if (afficher)
+                {
+                    Grille.TableauCases[deplacementPossible[i][0], deplacementPossible[i][1]].Texture = _bordureCasePossible;
+                }
             }
             this.Cases_possibles = deplacementPossible;
         }
 
-        public void Possible(Texture2D _bordureCasePossible, Sort sort)
+        public void Possible(Texture2D _bordureCasePossible, Sort sort, bool afficher = true)
         {
             List<int[]> casesLancementPossible = PathFinding.findpath(this.Position, Grille.TableauCases, sort.RangeLancement, true);
             for (int i = 0; i < casesLancementPossible.Count - 1; i++)
             {
-                Grille.TableauCases[casesLancementPossible[i][0], casesLancementPossible[i][1]].Texture = _bordureCasePossible;
+                if (afficher)
+                {
+                    Grille.TableauCases[casesLancementPossible[i][0], casesLancementPossible[i][1]].Texture = _bordureCasePossible;
+                }
             }
             this.Cases_possibles = casesLancementPossible;
         }
@@ -379,7 +398,17 @@ namespace SAE_1._01
 
         public void Chemin_A_Star(Case depart,Case arrive)
         {
-           
+
+            List<Case> chemin = GetChemin_A_Star(depart, arrive);
+            this.Chemin = chemin;
+            this.Jouable = false;
+            Console.WriteLine("Coordonne depart" + chemin[0].X + " " + chemin[0].Y);
+            Console.WriteLine("Coordonne arrive" + chemin[chemin.Count-1].X + " " + chemin[chemin.Count-1].Y);
+
+        }
+
+        public List<Case> GetChemin_A_Star(Case depart,Case arrive)
+        {
             List<int[]> res = PathFinding.A_star(depart, arrive, this.Grille.TableauCases);
             List<Case> chemin = new List<Case>();
             for (int i = 0; i < res.Count; i++)
@@ -387,13 +416,9 @@ namespace SAE_1._01
                 int x = res[i][1];
                 int y = res[i][0];
                 chemin.Add(this.Grille.TableauCases[x, y]);
-                Console.WriteLine(x+""+y);
+                Console.WriteLine(x + "" + y);
             }
-            this.Chemin = chemin;
-            this.Jouable = false;
-            Console.WriteLine("Coordonne depart" + chemin[0].X + " " + chemin[0].Y);
-            Console.WriteLine("Coordonne arrive" + chemin[chemin.Count-1].X + " " + chemin[chemin.Count-1].Y);
-
+            return chemin;
         }
 
         abstract public void EstTuePar(Entite tueur, List<Entite> listeEntitesVivantes);
@@ -414,7 +439,7 @@ namespace SAE_1._01
 
             if(this.PointVie < 0)
             {
-                this.EstTuePar(lanceur, gameManager.EntitesCombat);
+                this.EstTuePar(lanceur, Manageur.EntitesCombat);
             }
         }
 

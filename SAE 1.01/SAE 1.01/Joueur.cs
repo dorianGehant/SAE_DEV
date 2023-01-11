@@ -24,6 +24,11 @@ namespace SAE_1._01
 
         }
 
+        public override void DeplacementFini()
+        {
+            this.PlayAnim("Idle");
+        }
+
         public override void EstTuePar(Entite tueur, List<Entite> listeEntitesVivantes)
         {
             listeEntitesVivantes.Remove(this);
